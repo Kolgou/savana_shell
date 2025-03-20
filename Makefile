@@ -13,6 +13,7 @@ SRC_FILES = parser/readline.c \
          parser/free.c \
 		 parser/command.c \
 		 parser/checking.c \
+		 exec/execute.c \
          main.c
 
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))

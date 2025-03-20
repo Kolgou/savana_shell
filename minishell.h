@@ -78,6 +78,9 @@ void	handle_quote(t_token **tokens, char *input, int *i);
 //command 
 t_command   *parse_command(t_token *tokens);
 
+//execute
+int    execute_cmd(t_command *cmd, char **env);
+
 //free
 void    free_tokens(t_token *tokens);
 void    free_redirects(t_redirection *redirects);

@@ -14,6 +14,15 @@ static t_command  *create_command(void)
     return (new_commands);
 }
 
+static void init_no_args(t_command *cmd, char *args)
+{
+    cmd->args = malloc(sizeof(char *) * 2);
+    if (!cmd->args)
+        return ;
+    cmd->args[0] = ft_strdup(args);
+    cmd->args[1] = NULL;
+}
+
 static int add_arguments(t_command *cmd, char *args)
 {
     int     i;
@@ -22,11 +31,7 @@ static int add_arguments(t_command *cmd, char *args)
     i = 0;
     if (!cmd->args)
     {
-        cmd->args = malloc(sizeof(char *) * 2);
-        if (!cmd->args)
-            return (0);
-        cmd->args[0] = ft_strdup(args);
-        cmd->args[1] = NULL;
+        init_no_args(cmd, args);
         return (1);  
     }
     while (cmd->args[i])
@@ -83,8 +88,8 @@ static int  process_tokens(t_token **c_token, t_command **c_cmd)
             return (0);
         *c_cmd = (*c_cmd)->next;
     }
-    else if ((*c_token)->type == REDIR_IN || (*c_token)->type == REDIR_OUT || (*c_token)->type == APPEND
-        || (*c_token)->type == HEREDOC)
+    else if ((*c_token)->type == REDIR_IN || (*c_token)->type == REDIR_OUT 
+            || (*c_token)->type == APPEND || (*c_token)->type == HEREDOC)
     {
         t_token_type redir_type = (*c_token)->type;
         if (!(*c_token)->next || ((*c_token)->next->type != WORD && (*c_token)->next->type != DQUOTE

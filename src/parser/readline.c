@@ -10,7 +10,7 @@ int	ft_strcmp(const char *s1, const char *s2)
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
-static void execute_commands(t_command *cmd_list, char **env)
+void execute_commands(t_command *cmd_list, char **env)
 {
     t_command *current = cmd_list;
     
@@ -73,7 +73,7 @@ static int exec_input(char *input, char **env)
 	free_tokens(tokens);
 	if (cmd_list)
 	{
-		execute_commands(cmd_list, env);
+		execute_cmd(cmd_list, env);
 		free_commands(cmd_list);
 		return (1);
 	}

@@ -6,6 +6,7 @@
 # include <readline/history.h>
 # include <stdlib.h>
 # include "libft/libft.h"
+# include <sys/wait.h>
 
 #ifndef HOST_NAME_MAX
 # define HOST_NAME_MAX 64

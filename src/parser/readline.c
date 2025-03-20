@@ -67,7 +67,7 @@ static int exec_input(char *input, char **env)
 	t_command	*cmd_list;
 
 	tokens = tokenize_input(input);
-    if (!check_syntaxe(tokens) || !check_quotes(tokens))
+    if (!check_syntaxe(tokens) || !check_quotes(tokens) || !*input)
 		return (free_tokens(tokens), 0);
 	cmd_list = parse_command(tokens);
 	free_tokens(tokens);

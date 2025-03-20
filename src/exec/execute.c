@@ -2,18 +2,16 @@
 
 static int	execute_in_child(char *path, char **args, char **env)
 {
-    pid_t	pid;
-    int		status;
+    pid_t    pid;
+    int      status;
 
     pid = fork();
-    if (pid == -1)
-        return (1);
-    else if (pid == 0)
+    if (pid == 0)
     {
         if (execve(path, args, env) == -1)
             exit(EXIT_FAILURE);
     }
-    else
+    else 
     {
         waitpid(pid, &status, 0);
         if (WIFEXITED(status))
@@ -62,7 +60,7 @@ static int     execute_cmd_path(char *cmd, char **paths, char **env)
 	{
 		if (!access(args[0], F_OK | X_OK))
 			return execute_in_child(args[0], args, env);
-		printf("nul ton code ");
+		printf("nul ton code\n");
 		return (0);
 	}
     if (!execute_absolute_path(args, paths))

@@ -19,10 +19,12 @@ bool is_n_option(const char *str)
     if (str[0] != '-')
         return (false);
 
-    for (int i = 1; str[i] != '\0'; i++)
+    int i = 1;
+    while (str[i] != '\0')
     {
         if (str[i] != 'n')
             return (false);
+        i++;
     }
 
     return (str[1] != '\0');

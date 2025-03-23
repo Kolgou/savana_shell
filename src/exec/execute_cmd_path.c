@@ -1,6 +1,6 @@
 #include "../../minishell.h"
 
-static int	execute_in_child(char *path, char **args, char **env)
+static int	execute_in_child(char *path, char **args, char **env, t_redirection *redirects)
 {
     pid_t    pid;
     int      status;
@@ -8,6 +8,9 @@ static int	execute_in_child(char *path, char **args, char **env)
     pid = fork();
     if (pid == 0)
     {
+        if (redirects)
+            if (!apply_redirections(redirects))
+                exit(EXIT_FAILURE);
         if (execve(path, args, env) == -1)
             exit(EXIT_FAILURE);
     }
@@ -22,7 +25,7 @@ static int	execute_in_child(char *path, char **args, char **env)
     return (0);
 }
 
-static int     execute_absolute_path(char **args, char **paths)
+static int     execute_absolute_path(char **args, char **paths, t_command *cmd)
 {
     char    *path;
     char    *tmp;
@@ -38,7 +41,7 @@ static int     execute_absolute_path(char **args, char **paths)
         free(tmp);
         if (!access(path, F_OK | X_OK))
         {
-            int ret = execute_in_child(path, args, NULL);
+            int ret = execute_in_child(path, args, NULL, cmd->redirect);
             free(path);
             return (ret);
         }
@@ -48,24 +51,18 @@ static int     execute_absolute_path(char **args, char **paths)
     return (1);
 }
 
-static int     execute_cmd_path(char *cmd, char **paths, char **env)
+static int     execute_cmd_path(t_command *cmd, char **paths, char **env)
 {
-    int     i;
-    char    *args[2];
-
-    args[0] = cmd;
-    args[1] = NULL;
-    i = 0;
-    if (args[0][0] == '/' || args[0][0] == '.')
+    if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
 	{
-		if (!access(args[0], F_OK | X_OK))
-			return execute_in_child(args[0], args, env);
-		printf("nul ton code\n");
+		if (!access(cmd->args[0], F_OK | X_OK))
+			return execute_in_child(cmd->args[0], cmd->args, env, cmd->redirect);
+            printf(BOLD_RED "طلب: %s: No such file or directory\n", cmd->args[0]);
 		return (0);
 	}
-    if (!execute_absolute_path(args, paths))
+    if (!execute_absolute_path(cmd->args, paths, cmd))
         return (0);
-    printf("Command not found\n");
+    printf(BOLD_RED "Command %s not found 🤓\n", cmd->args[0]);
     return (1);
 }
 
@@ -89,7 +86,7 @@ int    execute_cmd(t_command *cmd, char **env)
         i++;
     }
     if (cmd->args[0])
-        execute_cmd_path(cmd->args[0], paths, env);
+        execute_cmd_path(cmd, paths, env);
     else
         printf("Please provide a command to execute\n");
     free(path);

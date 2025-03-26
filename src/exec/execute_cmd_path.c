@@ -13,6 +13,7 @@ static int	execute_in_child(char *path, char **args, char **env, t_redirection *
                 exit(EXIT_FAILURE);
         if (execve(path, args, env) == -1)
             exit(EXIT_FAILURE);
+        exit(EXIT_SUCCESS);
     }
     else 
     {
@@ -25,7 +26,7 @@ static int	execute_in_child(char *path, char **args, char **env, t_redirection *
     return (0);
 }
 
-static int     execute_absolute_path(char **args, char **paths, t_command *cmd)
+static int     execute_absolute_path(char **args, char **paths, t_command *cmd, char **env)
 {
     char    *path;
     char    *tmp;
@@ -41,36 +42,40 @@ static int     execute_absolute_path(char **args, char **paths, t_command *cmd)
         free(tmp);
         if (!access(path, F_OK | X_OK))
         {
-            int ret = execute_in_child(path, args, NULL, cmd->redirect);
+            int ret = execute_in_child(path, args, env, cmd->redirect);
             free(path);
             return (ret);
         }
         free(path);
         i++;
     }
-    return (1);
+    return (-1);
 }
 
-static int     execute_cmd_path(t_command *cmd, char **paths, char **env)
+static int     execute_cmd_env(t_command *cmd, char **paths, char **env)
 {
     if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
 	{
 		if (!access(cmd->args[0], F_OK | X_OK))
 			return execute_in_child(cmd->args[0], cmd->args, env, cmd->redirect);
-            printf(BOLD_RED "طلب: %s: No such file or directory\n", cmd->args[0]);
-		return (0);
+        printf(BOLD_RED "أمر: %s: No such file or directory\n", cmd->args[0]);
+		return (127);
 	}
-    if (!execute_absolute_path(cmd->args, paths, cmd))
-        return (0);
-    printf(BOLD_RED "Command %s not found 🤓\n", cmd->args[0]);
-    return (1);
+    int ret = execute_absolute_path(cmd->args, paths, cmd, env);
+    if (ret == -1)
+    {
+        printf(BOLD_RED "Command %s not found 🤓\n", cmd->args[0]);
+        return (127);
+    }
+    return (ret);
 }
 
-int    execute_cmd(t_command *cmd, char **env)
+static int    execute_cmd(t_command *cmd, char **env)
 {
     int     i;
     char    *path;
     char    **paths;
+    int     result;
 
     path = NULL;
     paths = NULL;
@@ -85,11 +90,30 @@ int    execute_cmd(t_command *cmd, char **env)
         }
         i++;
     }
-    if (cmd->args[0])
-        execute_cmd_path(cmd, paths, env);
-    else
-        printf("Please provide a command to execute\n");
+    result = -1;
+    result = execute_cmd_env(cmd, paths, env);
     free(path);
     free(paths);
-    return (1);
+    return (result);
+}
+
+void execute_with_redir(t_command *cmd, char **env)
+{
+    int saved_stdin = dup(STDIN_FILENO);
+    int saved_stdout = dup(STDOUT_FILENO);
+
+    if (cmd->args && cmd->args[0])
+        execute_cmd(cmd, env);
+    else if (cmd->redirect && !apply_redirections(cmd->redirect))
+    {
+        dup2(saved_stdin, STDIN_FILENO);
+        dup2(saved_stdout, STDOUT_FILENO);
+        close(saved_stdin);
+        close(saved_stdout);
+        return;
+    }
+    dup2(saved_stdin, STDIN_FILENO);
+    dup2(saved_stdout, STDOUT_FILENO);
+    close(saved_stdin);
+    close(saved_stdout);
 }

@@ -15,6 +15,7 @@ SRC_FILES = parser/readline.c \
 		 parser/checking.c \
 		 exec/execute_cmd_path.c \
 		 redirections/handle_redir.c \
+		 redirections/heredoc.c \
          main.c
 
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))

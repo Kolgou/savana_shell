@@ -99,7 +99,7 @@ void	handle_quote(t_token **tokens, char *input, int *i);
 t_command   *parse_command(t_token *tokens);
 
 //execute
-int    execute_cmd(t_command *cmd, char **env);
+void     execute_with_redir(t_command *cmd, char **env);
 
 //free
 void    free_tokens(t_token *tokens);
@@ -108,5 +108,8 @@ void    free_commands(t_command *cmd_list);
 
 //redirections
 int     apply_redirections(t_redirection *redirects);
+
+//heredoc
+int     heredoc_redir(t_redirection *redirect);
 
 #endif

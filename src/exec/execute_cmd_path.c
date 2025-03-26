@@ -1,4 +1,5 @@
 #include "../../minishell.h"
+#include <stdbool.h> // Ensure this is included for the 'bool' type
 
 static int	execute_in_child(char *path, char **args, char **env, t_redirection *redirects)
 {
@@ -26,7 +27,7 @@ static int	execute_in_child(char *path, char **args, char **env, t_redirection *
     return (0);
 }
 
-static int     execute_absolute_path(char **args, char **paths, t_command *cmd, char **env)
+static int execute_absolute_path(char **args, char **paths, t_command *cmd, char **env)
 {
     char    *path;
     char    *tmp;
@@ -52,7 +53,7 @@ static int     execute_absolute_path(char **args, char **paths, t_command *cmd, 
     return (-1);
 }
 
-static int     execute_cmd_env(t_command *cmd, char **paths, char **env)
+static int execute_cmd_env(t_command *cmd, char **paths, char **env)
 {
     if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
 	{
@@ -70,12 +71,64 @@ static int     execute_cmd_env(t_command *cmd, char **paths, char **env)
     return (ret);
 }
 
-static int    execute_cmd(t_command *cmd, char **env)
+static bool is_n_option(const char *str)
+{
+    if (str[0] != '-')
+        return (false);
+
+    int i = 1;
+    while (str[i] != '\0')
+    {
+        if (str[i] != 'n')
+            return (false);
+        i++;
+    }
+
+    return (str[1] != '\0');
+}
+
+static void handle_echo(t_command *cmd)
+{
+    bool n_option = false;
+    int i = 1;
+
+    while (cmd->args[i] && is_n_option(cmd->args[i]))
+    {
+        n_option = true;
+        i++;
+    }
+
+    while (cmd->args[i])
+    {
+        printf("%s", cmd->args[i]);
+        i++;
+        if (cmd->args[i])
+            printf(" ");
+    }
+
+    if (!n_option)
+        printf("\n");
+}
+
+static int execute_cmd(t_command *cmd, char **env)
 {
     int     i;
     char    *path;
     char    **paths;
     int     result;
+
+    if (cmd->args && cmd->args[0] && strcmp(cmd->args[0], "env") == 0)
+    {
+        for (i = 0; env[i]; i++)
+            printf("%s\n", env[i]);
+        return (0);
+    }
+
+    if (cmd->args && cmd->args[0] && strcmp(cmd->args[0], "echo") == 0)
+    {
+        handle_echo(cmd);
+        return (0);
+    }
 
     path = NULL;
     paths = NULL;

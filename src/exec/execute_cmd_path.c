@@ -1,4 +1,5 @@
 #include "../../minishell.h"
+#include <stdbool.h> // Ensure this is included for the 'bool' type
 
 static int	execute_in_child(char *path, char **args, char **env, t_redirection *redirects)
 {
@@ -26,7 +27,7 @@ static int	execute_in_child(char *path, char **args, char **env, t_redirection *
     return (0);
 }
 
-static int     execute_absolute_path(char **args, char **paths, t_command *cmd, char **env)
+static int execute_absolute_path(char **args, char **paths, t_command *cmd, char **env)
 {
     char    *path;
     char    *tmp;
@@ -52,7 +53,7 @@ static int     execute_absolute_path(char **args, char **paths, t_command *cmd, 
     return (-1);
 }
 
-static int     execute_cmd_env(t_command *cmd, char **paths, char **env)
+static int execute_cmd_env(t_command *cmd, char **paths, char **env)
 {
     if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
 	{
@@ -76,6 +77,19 @@ int    execute_cmd(t_command *cmd, char **env)
     char    *path;
     char    **paths;
     int     result;
+
+    if (cmd->args && cmd->args[0] && strcmp(cmd->args[0], "env") == 0)
+    {
+        for (i = 0; env[i]; i++)
+            printf("%s\n", env[i]);
+        return (0);
+    }
+
+    if (cmd->args && cmd->args[0] && strcmp(cmd->args[0], "echo") == 0)
+    {
+        handle_echo(cmd);
+        return (0);
+    }
 
     path = NULL;
     paths = NULL;

@@ -1,5 +1,5 @@
 #include "../../minishell.h"
-#include <stdbool.h> // Ensure this is included for the 'bool' type
+#include <stdbool.h>
 
 static int	execute_in_child(char *path, char **args, char **env, t_redirection *redirects)
 {
@@ -9,6 +9,8 @@ static int	execute_in_child(char *path, char **args, char **env, t_redirection *
     pid = fork();
     if (pid == 0)
     {
+        signal(SIGINT, SIG_DFL); 
+        signal(SIGQUIT, SIG_DFL);
         if (redirects)
             if (!apply_redirections(redirects))
                 exit(EXIT_FAILURE);
@@ -110,6 +112,19 @@ static void handle_echo(t_command *cmd)
         printf("\n");
 }
 
+static void handle_cd(t_command *cmd)
+{
+    if (!cmd->args[1])
+    {
+        printf(BOLD_RED "cd: missing argument\n");
+        return;
+    }
+    if (chdir(cmd->args[1]) != 0)
+    {
+        perror(BOLD_RED "cd");
+    }
+}
+
 static int execute_cmd(t_command *cmd, char **env)
 {
     int     i;
@@ -119,8 +134,12 @@ static int execute_cmd(t_command *cmd, char **env)
 
     if (cmd->args && cmd->args[0] && strcmp(cmd->args[0], "env") == 0)
     {
-        for (i = 0; env[i]; i++)
+        i = 0;
+        while (env[i])
+        {
             printf("%s\n", env[i]);
+            i++;
+        }
         return (0);
     }
 
@@ -130,16 +149,22 @@ static int execute_cmd(t_command *cmd, char **env)
         return (0);
     }
 
+    if (cmd->args && cmd->args[0] && strcmp(cmd->args[0], "cd") == 0)
+    {
+        handle_cd(cmd);
+        return (0);
+    }
+
     path = NULL;
     paths = NULL;
     i = 0;
     while (env[i])
     {
-        if (!strncmp(env[i], "PATH=", 5))
+        if (!ft_strncmp(env[i], "PATH=", 5))
         {
-            path = strdup(env[i] + 5);
+            path = ft_strdup(env[i] + 5);
             paths = ft_split(path, ':');
-            break ;
+            break;
         }
         i++;
     }

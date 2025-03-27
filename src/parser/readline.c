@@ -61,23 +61,21 @@ void execute_commands(t_command *cmd_list, char **env)
     (void)env;
 }
 
-static int exec_input(char *input, char **env)
+static void exec_input(char *input, char **env)
 {
 	t_token		*tokens;
 	t_command	*cmd_list;
 
 	tokens = tokenize_input(input);
     if (!check_syntaxe(tokens) || !check_quotes(tokens) || !*input)
-		return (free_tokens(tokens), 0);
+		free_tokens(tokens);
 	cmd_list = parse_command(tokens);
 	free_tokens(tokens);
 	if (cmd_list)
 	{
-		execute_cmd(cmd_list, env);
+        execute_with_redir(cmd_list, env);
 		free_commands(cmd_list);
-		return (1);
 	}
-	return (0);
 }
 
 int build_prompt(char **env)

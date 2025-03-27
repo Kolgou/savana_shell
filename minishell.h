@@ -7,10 +7,29 @@
 # include <stdlib.h>
 # include "libft/libft.h"
 # include <sys/wait.h>
+# include <fcntl.h>
 
 #ifndef HOST_NAME_MAX
 # define HOST_NAME_MAX 64
 #endif
+
+// Styles
+#define BOLD    "\033[1m"
+#define ITALIC  "\033[3m"
+#define UNDER   "\033[4m"
+#define RESET   "\033[0m"
+
+// Couleurs
+#define RED     "\033[31m"
+#define GREEN   "\033[32m"
+#define YELLOW  "\033[33m"
+#define BLUE    "\033[34m"
+
+// Combinaisons
+#define BOLD_RED    "\033[1;31m"
+#define BOLD_GREEN  "\033[1;32m"
+#define BOLD_YELLOW "\033[1;33m"
+#define BOLD_BLUE   "\033[1;34m"
 
 #ifndef PATH_MAX
 # define PATH_MAX 4096
@@ -80,11 +99,17 @@ void	handle_quote(t_token **tokens, char *input, int *i);
 t_command   *parse_command(t_token *tokens);
 
 //execute
-int    execute_cmd(t_command *cmd, char **env);
+void     execute_with_redir(t_command *cmd, char **env);
 
 //free
 void    free_tokens(t_token *tokens);
 void    free_redirects(t_redirection *redirects);
 void    free_commands(t_command *cmd_list);
+
+//redirections
+int     apply_redirections(t_redirection *redirects);
+
+//heredoc
+int     heredoc_redir(t_redirection *redirect);
 
 #endif

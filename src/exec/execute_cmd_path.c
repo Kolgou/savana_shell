@@ -1,5 +1,5 @@
 #include "../../minishell.h"
-#include <stdbool.h> // Ensure this is included for the 'bool' type
+#include <stdbool.h>
 
 static int	execute_in_child(char *path, char **args, char **env, t_redirection *redirects)
 {

@@ -64,16 +64,35 @@ void execute_commands(t_command *cmd_list, char **env)
 static void exec_input(char *input, char **env)
 {
 	t_token		*tokens;
+    t_token     *current;
 	t_command	*cmd_list;
+    int     nb_pipes = 0;
 
 	tokens = tokenize_input(input);
     if (!check_syntaxe(tokens) || !check_quotes(tokens) || !*input)
 		free_tokens(tokens);
+    current = tokens;
 	cmd_list = parse_command(tokens);
-	free_tokens(tokens);
+    if (cmd_list && cmd_list->args[0] && cmd_list->args[0][0] == '$')
+    {
+        expand_var_env(cmd_list, env);
+        free_tokens(tokens);
+        free_commands(cmd_list);
+        return;
+    }
+    while (current)
+    {
+        if (current->type == PIPE)
+            nb_pipes = 1;
+        current = current->next;
+    }
+    free_tokens(tokens);
 	if (cmd_list)
 	{
-        execute_with_redir(cmd_list, env);
+        if (nb_pipes == 1)
+            pipe_handler(cmd_list, env);
+        else
+            execute_with_redir(cmd_list, env);
 		free_commands(cmd_list);
 	}
 }

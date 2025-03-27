@@ -60,11 +60,21 @@ typedef struct s_redirection {
 } t_redirection;
 
 typedef struct s_command {
-    char *command;
     char **args;
     t_redirection *redirect;
     struct s_command *next;
 } t_command;
+
+typedef struct s_data {
+    int fd[2];
+    pid_t   pid;
+    char    *path;
+    char    **paths;
+    char    **args;
+    int     fd_stdin;
+    int     fd_stdout;
+    int     status;
+}   t_data;
 
 //readline
 int     build_prompt(char **env);
@@ -99,7 +109,8 @@ void	handle_quote(t_token **tokens, char *input, int *i);
 t_command   *parse_command(t_token *tokens);
 
 //execute
-void     execute_with_redir(t_command *cmd, char **env);
+int     execute_cmd(t_command *cmd, char **env);
+int     execute_with_redir(t_command *cmd, char **env);
 
 //free
 void    free_tokens(t_token *tokens);
@@ -111,5 +122,11 @@ int     apply_redirections(t_redirection *redirects);
 
 //heredoc
 int     heredoc_redir(t_redirection *redirect);
+
+//pipe
+int     pipe_handler(t_command *command, char **env);
+
+//expand
+int     expand_var_env(t_command *command, char **env);
 
 #endif

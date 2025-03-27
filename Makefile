@@ -16,6 +16,9 @@ SRC_FILES = parser/readline.c \
 		 exec/execute_cmd_path.c \
 		 redirections/handle_redir.c \
 		 redirections/heredoc.c \
+		 pipe/handle_pipe.c \
+		 utils/init.c \
+		 expand/expand_env.c \
          main.c
 
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_FILES))

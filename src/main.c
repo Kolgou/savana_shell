@@ -1,6 +1,5 @@
 #include "../minishell.h"
 
-
 int	main(__attribute__((unused)) int ac, __attribute__((unused)) char **av, char **env)
 {
 	using_history();

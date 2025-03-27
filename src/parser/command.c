@@ -7,7 +7,6 @@ static t_command  *create_command(void)
     new_commands = malloc(sizeof(t_command));
     if (!new_commands)
         return (NULL);
-    new_commands->command = NULL;
     new_commands->args = NULL;
     new_commands->redirect = NULL;
     new_commands->next = NULL;

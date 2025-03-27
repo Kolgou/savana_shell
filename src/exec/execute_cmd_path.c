@@ -70,7 +70,7 @@ static int     execute_cmd_env(t_command *cmd, char **paths, char **env)
     return (ret);
 }
 
-static int    execute_cmd(t_command *cmd, char **env)
+int    execute_cmd(t_command *cmd, char **env)
 {
     int     i;
     char    *path;
@@ -97,7 +97,7 @@ static int    execute_cmd(t_command *cmd, char **env)
     return (result);
 }
 
-void execute_with_redir(t_command *cmd, char **env)
+int execute_with_redir(t_command *cmd, char **env)
 {
     int saved_stdin = dup(STDIN_FILENO);
     int saved_stdout = dup(STDOUT_FILENO);
@@ -110,10 +110,11 @@ void execute_with_redir(t_command *cmd, char **env)
         dup2(saved_stdout, STDOUT_FILENO);
         close(saved_stdin);
         close(saved_stdout);
-        return;
+        return (0);
     }
     dup2(saved_stdin, STDIN_FILENO);
     dup2(saved_stdout, STDOUT_FILENO);
     close(saved_stdin);
     close(saved_stdout);
+    return (1);
 }

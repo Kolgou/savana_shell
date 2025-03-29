@@ -57,6 +57,7 @@ fclean: clean
 	@rm -f $(NAME)
 	@make -s -C $(LIBFT_DIR) fclean
 	@echo "Fclean terminée"
+	@make -s aubin
 
 re: fclean all
 
@@ -123,5 +124,57 @@ africa:
 	@echo "\033[1;32m                                                                          				\033[0m"
 	@echo "\033[1;32m                                                                          				\033[0m"
 	@echo "\033[1;32m                                                                          				\033[0m"
+
+
+aubin:
+	@echo "																									   "
+	@echo "J???7777777??J?!!~~~~^^^^^^^^^~~~~!!5GPPPGGPPGGGGGGGGGGGGPPPPPGGPPPGB#######BPPPPP55YJJY?^5!~~~~^^^^"
+	@echo "??7!!!!77????JJJJJJJJJJ??7!!!!!~~~~~YGGPPGPPGGGGGGGGPGGGPPPP555PPPPGB#######BPPPPPYJYYJJYJ5?77!!~^^^"
+	@echo "??????????Y55YYYYYY55PBBBBBGGGPP5YYJ5GGGGPPPGGGGGGGGPPPPPP5555PPPGGGB#######BPPPPPYJYPP5PGP???77!~^^"
+	@echo "..........~PGBBBBBGGGGGBBBBBGGGGGPPPPP5555Y55YYYYYJJJ????77!!7P####BB#######BPP555JJYPG5PPPJ?77!~~^^"
+	@echo "^^^^^^~~~~!!7?JPPPPPPPPP55YJJJJ???????7?JJJ?????7??J??7777777!7PB#BBB#####BBGPP5555555Y5PYY~~~~^^^^^"
+	@echo "JJJYYYYY5555PPPPGGGGGGGPYYJJJJJ??????77??JJJJ7777?JYJJJJJJ??J?775##BB#####BBGP5555YYY5PPJJ577!~^^^^^"
+	@echo "PPPPPPPPPPPPPPGGGGGGGGGPYYJJJJJJ????777??JJJJJJ77???JJJJJJ?J?7!!75BBB####BBBGP5Y55PPP55Y?YPJ?!^^^^^^"
+	@echo "Y55PPPPPPPGPPPPGGGGGGGGPYJJJ???777???7!7?JYYJJ??J????JJJJ??7!!!!!75GB####BBBGP5Y55PP55YYJ55?7~^^^^^^"
+	@echo ":^^^~~~!!7J5PPPGGGGGGGGP?7????7777777777????????????JJ????7!!!!7777PB####BBBPP55P5PP555YY5Y77~^^^^^^"
+	@echo "::::::::..:7PPPPGGGGGGGPJ7JYJ??J?????7?7???????????JJ????7777777???PB###BBBBGGP5PPPP5555Y5J7!^:::^^^"
+	@echo ":::::::::::7PPPPPGGGGGGPY??YJJ?77!77777!77J5PPP55555P5YJ7!!77777??JPG###BBBBGPP55PGGGGGGGG?!~~^^^^~!"
+	@echo "^^^^^::::::7PPPPPGGGGGGGPPY555Y?!~!!7!!!7PB##BBGGGPP5Y5PY7!777777??PGBB#BBBBPP555PGGGGGGGP7!!!!~~~~!"
+	@echo "^^^^^^^::::7PPPPPGGGGGGGBGYY5YYJ?!!77!77P#GGP555YJ?!^^^!YY7!7777777Y5PP5PPPYJ?7???77!!!!!!~~!~~~~~~^"
+	@echo ":::::::::::?PPPPPGGGGGGGGP7??????!~!7?7Y#G?!!^^::::^^^^^7P?^^^^^^^^^^~~~~~~~~~~~~^::::::::^^^^~~!!~~"
+	@echo ":::::::::^JPPPPPPGGGGGGGGP??77?77!!7??!Y#P???YYY?!JY5YJ7!JJ::^^^^^^^:^^^^^^^^^~~~^:...:..::..:~!!!!!"
+	@echo ":::::::.:YGPPPPPPGGGGGGGG5?777?7?77???7JGJ?Y5P55?:~?JJ7!^~77~:^^^^^^:^^^^^^^^^^^~^.....::.:.:.~7~~!~"
+	@echo "::::::..^PPPPPPPPGGGGGGGG57777777!!!7!7YY7!!!~!?7~~!~^^::^7!^:^^:^^^^^^^^^^^^^^:::.........:..YY!~~~"
+	@echo "........^PPPPPPPGGGGGGGGG57777777~!~~~!7??7!!!77YY?7~~~~~~^^:::::::::^^^^^::::^:::............?Y?777"
+	@echo "........~PPPPPGGGGGGGGGGG5777777777!~~~~!7?????JJJ?777!!~^::::::::::::^::^:^^::^^^...........^^~777!"
+	@echo "..:.:::.^PPPPGGGGGGGGGGGG5??????77!!~^^~~~!JJ???77!~~!!!~:::::::::::::::^^^^^^::::...........?^^!!!~"
+	@echo "......:.^PPPGGGGGGGGGGGGG5??????77!!^^^~~~~7YYYJ???77777^::::::::::::::^^^^^::::::...........?^~7!!!"
+	@echo "...::...:5GPGGGGGGGGGGGGGY77???????!~^^~~~~!JY5PPP5YJ?7!^::::^:::::::^^^^^^^^:::::..........:?:~!!!!"
+	@echo "...::::.:5GGGGGGGGGGGGGGGY777777?JJ?!~~~!!!!??JYYYJ?77!~^::::::::::::::^^^^^^:::.............7:!!!!!"
+	@echo ":^^^^^^:^YYYPGGGGGGGGGGGGY!!7!!!JYYJ7!!!7!~~????JYJ?77!!~:::7!^::::::::::::::^::::......:...:7:~!!~~"
+	@echo "::^^^^^:^~^:?GGP5555YYYYP5????777?J?77?Y5^.^7??77??77!!~~~75GP5Y?!~^::::::::::::::..........:7^777!!"
+	@echo ".:::^^^:^7?7JPPYJ?77!7!~YBGGGGP7.:~?5PGB#GY7!7??777777?J5GBGGPPPPP5YJ!^:::::::............:.:?JYYJJY"
+	@echo ".::::::!?5555YYYYY5YJYJ?7!!!!!!7?YPGGGGBBB###BBBBBBBBBBBBGGGGGGGGPPPP5Y?7???77!!!~^........::JYPPPPP"
+	@echo "^^^::::P&##########BBBBBGGPPP55PGGGGGGBBBBB########BBBBBBBGGGGGGGGBGPGGGPPBBBBBBBBY..7YJJ????YYY5555"
+	@echo "BBBG5?^G########&&####&&&&&&BBBBBBGGGBBBBBBBB####BBBBBBBBBGGGGGGGGBBBBBGGGPG###BBBP^.JBGPP55555555PP"
+	@echo "####&#PB####&&&&&&&&&&&&&#&#BBBBB#BBBBBBBBBBBBBBBBBBBBBBBBGGBGGGGGBB#BBBBBGG#&&&&&&?.7BGGGGGGGGGGGGG"
+	@echo "GGBBBBB#####&&&&&&&&&&&&&&&BB##BB##B#BBBBBBBBBBBB##BBBBBBBGB55GBBB####BB#BGGB&&&&&@P:!BBBB##########"
+	@echo "5555BBB#####&&&&&&&&&&&&#&###B##########BBBBBBBBBB##BBBBBBBB?JBBB########BBBG#&&&&GP^~BBBB##########"
+	@echo "5555#######BP#&&&&&&&&&&&&##############BBBBBBBBBB###BBBBBBBBBBGB########BBBBB#&&#^..^GBB###########"
+	@echo "555P########B#&&&&&&&&&&&&#######&&####BBBBBB##BBB###BBBBBBBBBBBBB##&#####BBBGB##BJ??JGGB#&#########"
+	@echo "555P&&&&&&&##BG&&&&&&&&&&&#B#&###&&####BBBBB###BBB####BB##BB####BBB##&#####BGGG#######BB##&&&&&##&&#"
+	@echo "555G&&&&&&&##&#&&&&&&&&&&&#B######&#####BB#####BBB####BB#########BBB&&###BBGBBBB##BBBB##&&&&&&&&&&&&"
+	@echo "PP5B&&&&&&&&##BGGBBBBB#&&&#BB#&&##&&###########BBB#####BB#&&########&&####BB###B#######G#&&&&&&&&&&&"
+	@echo "PPP#&&&&&&&&&#G5555555B&&###BB##&#&&&&&########BBB#####BBB#&&####&&&&&&&&#####BB######B#&&&&&&&&&&&&"
+	@echo "PPP#&&&&#&&&&######BBB&&&###B##B###&&&&########BBBB####BBB###&###&&&&&&&#####BBBBBBBBBP5B&&&&&&&&&&&"
+	@echo "PPG####&&&&###B#&BB&&&&&&###B#####&&&&&########BBBB####BBB#######&&&&&&######BBB######5^J&&&&&&&&&&&"
+	@echo "PPG&&&&&&&&#####B5PGGB&&&####B#&&&&&&&&#######BBBBBB####BB#######&&&&&&#####BBBB#&&&&&&GY5PPPPPGGGGB"
+	@echo "GPB&&&&&&&&#####BPPP5G&&&###&#BB#&&&&@&#########BBBB#####BB######&&&&&&&&##BBBBB#&&&&&&&GPGGGPPPP555"
+	@echo "GG#&&&&&&&#######G55PB&&&#B###&#B#&&@@&##########BBBBB####BB#&&&#&&&&&##BBGGGGBB&&&&&&&&&&&&&&&&&###"
+	@echo "GG#&&&&&&&######G~~~~5@&&#BBBB######&&&&###############&&&##BB#&&&&&&&&&##BBBBBB&&&&&&&&&&&@@@@@@@@@"
+	@echo "###&&&&&&&######B55YP#&&&&#BBBBBB##&&&&&&##&#########&&&&&&&&#BB###&#######BBBBB########&&J!7??JJY5P"
+	@echo "&&&&&&&&&&######GBBBB&&&&&####BBB###&&&&&&&######&&&&#######&&&#BBB##BGBBBB#BBBB########&&P:.::~!?5P"
+	@echo "&#&&&&&&&&&##&#BPPB#GBBBBB######BBBBB&&&&&######&&##&&&&##########B#&#BBBBB###B##########&&5?J5YJYGB"
+	@echo "																									   "
 
 .PHONY: all clean fclean re

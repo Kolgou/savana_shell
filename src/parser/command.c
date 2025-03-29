@@ -10,6 +10,7 @@ static t_command  *create_command(void)
     new_commands->args = NULL;
     new_commands->redirect = NULL;
     new_commands->next = NULL;
+    new_commands->env = NULL;
     return (new_commands);
 }
 

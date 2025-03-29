@@ -60,22 +60,11 @@ typedef struct s_redirection {
     struct s_redirection *next;
 } t_redirection;
 
-typedef struct s_data {
-    int fd[2];
-    pid_t   pid;
-    char    *path;
-    char    **paths;
-    char    **args;
-    int     fd_stdin;
-    int     fd_stdout;
-    int     status;
-    char    **env;
-}   t_data;
-
 typedef struct s_command {
     char **args;
     t_redirection *redirect;
     struct s_command *next;
+    char    **env;
 } t_command;
 
 //readline
@@ -130,6 +119,9 @@ int     pipe_handler(t_command *command, char **env);
 
 //expand
 int      expand_var_env(t_command *command, char **env);
+
+//export_utils
+void     sort_env(char **env);
 
 //builtins
 void     ft_echo(t_command *command, char **env);

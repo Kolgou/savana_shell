@@ -28,7 +28,6 @@ void	handle_output_redirection(t_token **tokens, char *input, int *i)
 	}
 }
 
-
 void    handle_quote(t_token **tokens, char *input, int *i)
 {
     char quote_type;

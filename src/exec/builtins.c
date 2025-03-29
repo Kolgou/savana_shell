@@ -16,7 +16,7 @@ static bool is_n_option(const char *str)
     return (str[1] != '\0');
 }
 
-void ft_echo(t_command *cmd, char **env)
+void    ft_echo(t_command *cmd, char **env)
 {
     bool n_option = false;
     int i = 1;
@@ -36,4 +36,13 @@ void ft_echo(t_command *cmd, char **env)
     }
     if (!n_option)
         printf("\n");
+}
+
+void    ft_export(t_command *cmd, char **env)
+{
+    if (!cmd->args[1])
+    {
+        sort_env(env);
+    }
+    
 }

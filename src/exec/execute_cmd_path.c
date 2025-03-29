@@ -108,6 +108,8 @@ int execute_with_redir(t_command *cmd, char **env)
 
     if (cmd->args && !ft_strcmp(cmd->args[0], "echo"))
         ft_echo(cmd, env);
+    else if (cmd->args && !ft_strcmp(cmd->args[0], "export"))
+        ft_export(cmd, env);
     else if (cmd->args && cmd->args[0])
         execute_cmd(cmd, env);
     else if (cmd->redirect && !apply_redirections(cmd->redirect))

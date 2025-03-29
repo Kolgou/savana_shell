@@ -8,6 +8,7 @@
 # include "libft/libft.h"
 # include <sys/wait.h>
 # include <fcntl.h>
+#include <stdbool.h>
 
 #ifndef HOST_NAME_MAX
 # define HOST_NAME_MAX 64
@@ -59,12 +60,6 @@ typedef struct s_redirection {
     struct s_redirection *next;
 } t_redirection;
 
-typedef struct s_command {
-    char **args;
-    t_redirection *redirect;
-    struct s_command *next;
-} t_command;
-
 typedef struct s_data {
     int fd[2];
     pid_t   pid;
@@ -74,7 +69,14 @@ typedef struct s_data {
     int     fd_stdin;
     int     fd_stdout;
     int     status;
+    char    **env;
 }   t_data;
+
+typedef struct s_command {
+    char **args;
+    t_redirection *redirect;
+    struct s_command *next;
+} t_command;
 
 //readline
 int     build_prompt(char **env);
@@ -127,6 +129,10 @@ int     heredoc_redir(t_redirection *redirect);
 int     pipe_handler(t_command *command, char **env);
 
 //expand
-int     expand_var_env(t_command *command, char **env);
+int      expand_var_env(t_command *command, char **env);
+
+//builtins
+void     ft_echo(t_command *command, char **env);
+void     ft_export(t_command *command, char **env);
 
 #endif

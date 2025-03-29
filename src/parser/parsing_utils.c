@@ -35,3 +35,4 @@ int	get_word_length(char *input, int i)
 	}
 	return (len);
 }
+

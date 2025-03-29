@@ -14,6 +14,7 @@ SRC_FILES = parser/readline.c \
 		 parser/command.c \
 		 parser/checking.c \
 		 exec/execute_cmd_path.c \
+		 exec/builtins.c \
 		 redirections/handle_redir.c \
 		 redirections/heredoc.c \
 		 pipe/handle_pipe.c \

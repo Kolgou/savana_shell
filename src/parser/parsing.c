@@ -73,7 +73,7 @@ void	print_tokens(t_token *tokens)
 {
 	t_token *current;
 	const char *type_strings[] = {"WORD", "PIPE", "REDIR_IN", "REDIR_OUT",
-		"APPEND", "HEREDOC", "SQUOTE", "DQUOTE"};
+		"APPEND", "HEREDOC"};
 
 	current = tokens;
 	while (current)

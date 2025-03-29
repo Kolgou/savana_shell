@@ -28,39 +28,38 @@ void	handle_output_redirection(t_token **tokens, char *input, int *i)
 	}
 }
 
-void handle_quote(t_token **tokens, char *input, int *i)
+
+void    handle_quote(t_token **tokens, char *input, int *i)
 {
     char quote_type;
-    int start;
     int len;
+    char *word;
     
     quote_type = input[*i];
-    if (quote_type == '\"')
-        add_token(tokens, create_token("\"", DQUOTE));
-    else
-        add_token(tokens, create_token("\'", SQUOTE));
-    (*i)++;
-    start = *i;
-    len = 0;
-    while (input[*i + len] && input[*i + len] != quote_type)
-        len++;
-    if (len > 0)
+    if (quote_type == '\'' || quote_type == '\"')
     {
-        char *word = malloc(len + 1);
-        if (word)
-        {
-            ft_strlcpy(word, &input[start], len + 1);
-            add_token(tokens, create_token(word, WORD));
-            free(word);
-        }
-    }
-    *i += len;
-    if (input[*i] == quote_type)
-    {
+        len = 1;
         if (quote_type == '\"')
-            add_token(tokens, create_token("\"", DQUOTE));
-        else
-            add_token(tokens, create_token("\'", SQUOTE));
-        (*i)++;
+        {
+            (*i)++;
+            len = 0;
+        }
+        while (input[*i + len] && input[*i + len] != quote_type)
+            len++;
+        if (input[*i + len] == '\'')
+            len++;
+        if (len > 0)
+        {
+            word = malloc(len + 1);
+            if (word)
+            {
+                ft_strlcpy(word, &input[*i], len + 1);
+                add_token(tokens, create_token(word, WORD));
+                free(word);
+            }
+        }
+        *i += len;
+        if (quote_type == '\"' && input[*i] == quote_type)
+            (*i)++;
     }
 }

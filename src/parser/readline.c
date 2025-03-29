@@ -73,13 +73,6 @@ static void exec_input(char *input, char **env)
 		free_tokens(tokens);
     current = tokens;
 	cmd_list = parse_command(tokens);
-    if (cmd_list && cmd_list->args[0] && cmd_list->args[0][0] == '$')
-    {
-        expand_var_env(cmd_list, env);
-        free_tokens(tokens);
-        free_commands(cmd_list);
-        return;
-    }
     while (current)
     {
         if (current->type == PIPE)

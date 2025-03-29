@@ -55,6 +55,9 @@ static int execute_absolute_path(char **args, char **paths, t_command *cmd, char
 
 static int execute_cmd_env(t_command *cmd, char **paths, char **env)
 {
+    if (cmd->args && cmd->args[0])
+        if (cmd->args[0][0] == '$' || (cmd->args[1] && cmd->args[1][0] == '$'))
+            expand_var_env(cmd, env);
     if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
 	{
 		if (!access(cmd->args[0], F_OK | X_OK))
@@ -77,19 +80,6 @@ int    execute_cmd(t_command *cmd, char **env)
     char    *path;
     char    **paths;
     int     result;
-
-    if (cmd->args && cmd->args[0] && strcmp(cmd->args[0], "env") == 0)
-    {
-        for (i = 0; env[i]; i++)
-            printf("%s\n", env[i]);
-        return (0);
-    }
-
-    if (cmd->args && cmd->args[0] && strcmp(cmd->args[0], "echo") == 0)
-    {
-        handle_echo(cmd);
-        return (0);
-    }
 
     path = NULL;
     paths = NULL;
@@ -116,7 +106,9 @@ int execute_with_redir(t_command *cmd, char **env)
     int saved_stdin = dup(STDIN_FILENO);
     int saved_stdout = dup(STDOUT_FILENO);
 
-    if (cmd->args && cmd->args[0])
+    if (cmd->args && !ft_strcmp(cmd->args[0], "echo"))
+        ft_echo(cmd, env);
+    else if (cmd->args && cmd->args[0])
         execute_cmd(cmd, env);
     else if (cmd->redirect && !apply_redirections(cmd->redirect))
     {

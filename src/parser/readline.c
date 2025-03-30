@@ -102,6 +102,7 @@ int build_prompt(char **env)
         add_history(input);
     if (ft_strcmp(input, "exit") == 0)
     {
+        printf("exit");
         free(input);
         return (0);
     }

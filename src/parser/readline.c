@@ -97,12 +97,15 @@ int build_prompt(char **env)
     static char prompt[100] = "\001\033[1;32m\002المحتالون الأفارقة$ \001\033[0m\002";
     input = readline(prompt);
     if (!input)
+    {
+        printf("exit\n");
         return (0);
+    }
     if (*input)
         add_history(input);
     if (ft_strcmp(input, "exit") == 0)
     {
-        printf("exit");
+        printf("exit\n");
         free(input);
         return (0);
     }

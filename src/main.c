@@ -31,15 +31,44 @@ void setup_signal_handling(void)
     sigaction(SIGQUIT, &sa_quit, NULL);
 }
 
+// Ajout d'une fonction pour dupliquer l'environnement
+char **duplicate_env(char **env)
+{
+    int count = 0;
+    int i = 0;
+    char **dup;
+
+    while (env[count])
+        count++;
+    dup = malloc(sizeof(char *) * (count + 1));
+    if (!dup)
+        return (NULL);
+    while (i < count)
+    {
+        dup[i] = ft_strdup(env[i]);
+        i++;
+    }
+    dup[count] = NULL;
+    return (dup);
+}
+
 int	main(__attribute__((unused)) int ac, __attribute__((unused)) char **av, char **env)
 {
+    char **my_env;
+
+    my_env = duplicate_env(env);
+    if (!my_env)
+    {
+        perror("duplication de l'environement");
+        return (1);
+    }
     setup_signal_handling();
-	using_history();
-	while (1)
-	{
-		if (!build_prompt(env))
+    using_history();
+    while (1)
+    {
+		if (!build_prompt(my_env))
 			break ;
-	}
-	rl_clear_history();
-	return (0);
+    }
+    rl_clear_history();
+    return (0);
 }

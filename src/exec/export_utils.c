@@ -45,3 +45,46 @@ void     sort_env(char **env)
     while (++i < count)
         printf("declare -x %s\n", sort[i]);
 }
+
+int     check_correct_args(char *str)
+{
+    int     i;
+    char    **tmp;
+
+    i = 1;
+    tmp = ft_split(str, '=');
+    if (((tmp[0][0] < 'A' || tmp[0][0] > 'Z') && tmp[0][0] != '_') || !tmp[1])
+        return (0);
+    while (tmp[0][i])
+    {
+        if ((tmp[0][i] < 'A' || tmp[0][i] > 'Z') && tmp[0][i] != '_' && (tmp[0][i] < '0' 
+                || tmp[0][i] > '9'))
+            return (0);
+        i++;
+    }
+    return (1);
+}
+
+char **create_updated_env(char **env, char *new_var)
+{
+    int i;
+    char **new_env;
+    i = 0;
+    while (env[i])
+        i++;
+    new_env = malloc(sizeof(char *) * (i + 2));
+    if (!new_env)
+    {
+        free(new_var);
+        return (NULL);
+    }
+    i = 0;
+    while (env[i])
+    {
+        new_env[i] = env[i];
+        i++;
+    }
+    new_env[i] = new_var;
+    new_env[i + 1] = NULL;
+    return (new_env);
+}

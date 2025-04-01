@@ -30,6 +30,22 @@ void free_redirects(t_redirection *redirects)
     }
 }
 
+void free_env(char **env)
+{
+    int i;
+    
+    if (!env)
+        return;
+        
+    i = 0;
+    while (env[i])
+    {
+        free(env[i]);
+        i++;
+    }
+    free(env);
+}
+
 void free_commands(t_command *cmd_list)
 {
     t_command *current;

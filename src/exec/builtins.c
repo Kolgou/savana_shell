@@ -38,11 +38,90 @@ void    ft_echo(t_command *cmd, char **env)
         printf("\n");
 }
 
-void    ft_export(t_command *cmd, char **env)
+void ft_export(t_command *cmd, char ***env_ptr)
+{
+    int i;
+    char *new_var;
+    char **new_env;
+    char **env = *env_ptr;
+
+    if (!cmd->args[1])
+    {
+        sort_env(cmd->env);
+        return;
+    }
+    if (!check_correct_args(cmd->args[1]))
+    {
+        printf("Export failed: invalid identifier\n");
+        return;
+    }
+    new_var = ft_strdup(cmd->args[1]);
+    if (!new_var)
+        return;
+    i = 0;
+    while (env[i])
+        i++;
+    new_env = malloc(sizeof(char *) * (i + 2));
+    if (!new_env)
+    {
+        free(new_var);
+        return;
+    }
+    i = 0;
+    while (env[i])
+    {
+        new_env[i] = env[i];
+        i++;
+    }
+    new_env[i] = new_var;
+    new_env[i + 1] = NULL;
+    if (cmd->env != env)
+        free(cmd->env);
+    cmd->env = new_env;
+    *env_ptr = new_env;
+}
+
+void    ft_cd(t_command *cmd)
 {
     if (!cmd->args[1])
     {
-        sort_env(env);
+        printf(BOLD_RED "cd: missing argument\n");
+        return;
     }
-    
+    if (chdir(cmd->args[1]) != 0)
+    {
+        perror(BOLD_RED "cd");
+    }
+}
+
+void    ft_env(char **env)
+{
+    if (!env)
+        return ;
+    while (*env != NULL)
+    {
+        printf("%s\n", *env);
+        env++;
+    }
+}
+
+void ft_unset(t_command *cmd, char ***env)
+{
+    int     i;
+    char    **tmp;
+
+    i = 0;
+    while ((*env)[i])
+    {
+        tmp = ft_split((*env)[i], '=');
+        if (!ft_strcmp(cmd->args[1], tmp[0]))
+        {
+            free((*env)[i]);
+            return ;
+        }
+        i++;
+        free(tmp[0]);
+        free(tmp[1]);
+    }
+    return ;
 }

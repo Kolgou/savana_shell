@@ -61,7 +61,7 @@ void execute_commands(t_command *cmd_list, char **env)
     (void)env;
 }
 
-static void exec_input(char *input, char **env)
+static void exec_input(char *input, char ***env_ptr)
 {
 	t_token		*tokens;
     t_token     *current;
@@ -73,6 +73,7 @@ static void exec_input(char *input, char **env)
 		free_tokens(tokens);
     current = tokens;
 	cmd_list = parse_command(tokens);
+    cmd_list->env = *env_ptr;
     while (current)
     {
         if (current->type == PIPE)
@@ -83,14 +84,14 @@ static void exec_input(char *input, char **env)
 	if (cmd_list)
 	{
         if (nb_pipes == 1)
-            pipe_handler(cmd_list, env);
+            pipe_handler(cmd_list, env_ptr);
         else
-            execute_with_redir(cmd_list, env);
+            execute_with_redir(cmd_list, env_ptr);
 		free_commands(cmd_list);
 	}
 }
 
-int build_prompt(char **env)
+int     build_prompt(char ***env_ptr)
 {
     char *input;
 
@@ -105,7 +106,7 @@ int build_prompt(char **env)
         free(input);
         return (0);
     }
-    exec_input(input, env);
+    exec_input(input, env_ptr);
     free(input);
     return (1);
 }

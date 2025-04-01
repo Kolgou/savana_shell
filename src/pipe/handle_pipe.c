@@ -42,13 +42,14 @@ static int process_last_command(t_command *current, pid_t *pid, char **env)
     return (1);
 }
 
-int pipe_handler(t_command *command, char **env)
+int pipe_handler(t_command *command, char ***env_ptr)
 {
     int pipe_fd[2];
     int status;
     pid_t pid;
     t_command *current = command;
     int saved_stdin = dup(STDIN_FILENO);
+    char **env = *env_ptr;
 
     while (current && current->next)
     {
@@ -65,6 +66,7 @@ int pipe_handler(t_command *command, char **env)
         continue;
     dup2(saved_stdin, STDIN_FILENO);
     close(saved_stdin);
+    *env_ptr = env;
     return (WEXITSTATUS(status));
 }
 

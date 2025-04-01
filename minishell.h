@@ -65,10 +65,11 @@ typedef struct s_command {
     t_redirection *redirect;
     struct s_command *next;
     char    **env;
+    int     test;
 } t_command;
 
 //readline
-int     build_prompt(char **env);
+int     build_prompt(char ***env_ptr);
 int	    ft_strcmp(const char *s1, const char *s2);
 
 //checking
@@ -86,6 +87,7 @@ void    print_tokens(t_token *tokens);
 int     is_operator_char(char c);
 int     is_whitespace(char c);
 int     get_word_length(char *input, int i);
+char		**fill_env(char **env);
 
 //parsing word
 void    handle_word(t_token **tokens, char *input, int *i);
@@ -101,12 +103,13 @@ t_command   *parse_command(t_token *tokens);
 
 //execute
 int     execute_cmd(t_command *cmd, char **env);
-int     execute_with_redir(t_command *cmd, char **env);
+int     execute_with_redir(t_command *cmd, char ***env_ptr);
 
 //free
 void    free_tokens(t_token *tokens);
 void    free_redirects(t_redirection *redirects);
 void    free_commands(t_command *cmd_list);
+void    free_env(char **env);
 
 //redirections
 int     apply_redirections(t_redirection *redirects);
@@ -115,16 +118,21 @@ int     apply_redirections(t_redirection *redirects);
 int     heredoc_redir(t_redirection *redirect);
 
 //pipe
-int     pipe_handler(t_command *command, char **env);
+int     pipe_handler(t_command *command, char ***env_ptr);
 
 //expand
 int      expand_var_env(t_command *command, char **env);
 
 //export_utils
 void     sort_env(char **env);
+int      check_correct_args(char *str);
+char     **create_updated_env(char **env, char *new_var);
 
 //builtins
 void     ft_echo(t_command *command, char **env);
-void     ft_export(t_command *command, char **env);
+void     ft_export(t_command *cmd, char ***env_ptr);
+void     ft_cd(t_command *cmd);
+void     ft_env(char **env);
+void     ft_unset(t_command *cmd, char ***env);
 
 #endif

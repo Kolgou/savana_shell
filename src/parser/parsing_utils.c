@@ -36,3 +36,23 @@ int	get_word_length(char *input, int i)
 	return (len);
 }
 
+char	**fill_env(char **env)
+{
+	int		i;
+	int		count;
+	char    **tmp;
+
+	i = -1;
+	count = 0;
+	while (env[count])
+		count++;
+	tmp = malloc(sizeof(char*) * (count + 1));
+	if (!tmp)
+		return (NULL);
+	i = -1;
+	while (++i < count)
+		tmp[i] = ft_strdup(env[i]);
+	tmp[count] = NULL;
+	return (tmp);
+}
+

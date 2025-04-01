@@ -35,7 +35,6 @@ all: $(NAME)
 
 $(NAME): $(OBJ_DIR) $(OBJ) $(LIBFT)
 	@$(CC) -o $(NAME) $(OBJ) $(LIBFT) -lreadline
-	@echo "Compilation de minishell terminée"
 	@make -s africa
 
 $(OBJ_DIR):
@@ -51,13 +50,14 @@ $(LIBFT):
 clean:
 	@rm -rf $(OBJ_DIR)
 	@make -s -C $(LIBFT_DIR) clean
-	@echo "Clean terminée"
+	@make -s aubin
+	@echo "\033[1;32mClean terminée\033[0m"
 
 fclean: clean
 	@rm -f $(NAME)
 	@make -s -C $(LIBFT_DIR) fclean
-	@echo "Fclean terminée"
-	@make -s aubin
+	@echo "\033[1;32mFclean terminée\033[0m"
+	@echo "                                "
 
 re: fclean all
 

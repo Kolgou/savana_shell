@@ -101,15 +101,22 @@ int    execute_cmd(t_command *cmd, char **env)
     return (result);
 }
 
-int execute_with_redir(t_command *cmd, char **env)
+int execute_with_redir(t_command *cmd, char ***env_ptr)
 {
     int saved_stdin = dup(STDIN_FILENO);
     int saved_stdout = dup(STDOUT_FILENO);
+    char **env = *env_ptr;
 
     if (cmd->args && !ft_strcmp(cmd->args[0], "echo"))
         ft_echo(cmd, env);
     else if (cmd->args && !ft_strcmp(cmd->args[0], "export"))
-        ft_export(cmd, env);
+        ft_export(cmd, env_ptr);
+    else if (cmd->args && !ft_strcmp(cmd->args[0], "cd"))
+        ft_cd(cmd);
+    else if (cmd->args && !ft_strcmp(cmd->args[0], "env"))
+        ft_env(env);
+    else if (cmd->args && !ft_strcmp(cmd->args[0], "unset"))
+        ft_unset(cmd, env_ptr);
     else if (cmd->args && cmd->args[0])
         execute_cmd(cmd, env);
     else if (cmd->redirect && !apply_redirections(cmd->redirect))

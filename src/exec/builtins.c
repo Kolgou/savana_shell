@@ -107,21 +107,41 @@ void    ft_env(char **env)
 
 void ft_unset(t_command *cmd, char ***env)
 {
-    int     i;
-    char    **tmp;
+    int i;
+    int j;
+    int k;
+    int count = 0;
+    int varlen;
 
-    i = 0;
-    while ((*env)[i])
+    while ((*env)[count])
+        count++;
+
+    if (!cmd->args[1])
+        return;
+
+    i = 1;
+    while (cmd->args[i])
     {
-        tmp = ft_split((*env)[i], '=');
-        if (!ft_strcmp(cmd->args[1], tmp[0]))
+        varlen = ft_strlen(cmd->args[i]);
+        j = 0;
+        while (j < count)
         {
-            free((*env)[i]);
-            return ;
+            if (ft_strncmp((*env)[j], cmd->args[i], varlen) == 0 && (*env)[j][varlen] == '=')
+            {
+                free((*env)[j]);
+
+                k = j;
+                while (k < count - 1)
+                {
+                    (*env)[k] = (*env)[k + 1];
+                    k++;
+                }
+                (*env)[count - 1] = NULL;
+                count--;
+                j--;
+            }
+            j++;
         }
         i++;
-        free(tmp[0]);
-        free(tmp[1]);
     }
-    return ;
 }

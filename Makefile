@@ -51,12 +51,14 @@ clean:
 	@rm -rf $(OBJ_DIR)
 	@make -s -C $(LIBFT_DIR) clean
 	@make -s aubin
-	@echo "\033[37mClean terminée\033[0m"
+	@echo "\033[37m																			\033[0m"
+	@echo "\033[37m																			\033[0m"
+	@echo "\033[37mClean done. 🕺\033[0m"
 
 fclean: clean
 	@rm -f $(NAME)
 	@make -s -C $(LIBFT_DIR) fclean
-	@echo "\033[37mFclean terminée\033[0m"
+	@echo "\033[37mFclean done. 🕺\033[0m"
 	@echo "                                "
 
 re: fclean all

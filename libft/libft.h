@@ -21,6 +21,9 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
+char	      *ft_strcpy(char *dest, const char *src);
+char	      *ft_strncpy(char *dest, const char *src, size_t n);
+char	      *ft_strstr(const char *haystack, const char *needle);
 void				*ft_memchr(const void *s, int c, size_t n);
 void				ft_bzero(void *s, size_t n);
 void				*ft_calloc(size_t nmemb, size_t size);

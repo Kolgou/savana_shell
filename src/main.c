@@ -1,10 +1,11 @@
-#include "../minishell.h"
+#define _POSIX_C_SOURCE 200809L
 #include <signal.h>
+#include "../minishell.h"
 
 static void sigint_handler(int sig)
 {
     (void)sig;
-    printf("\n");
+    write(STDOUT_FILENO, "\n", 1);
     rl_on_new_line();
     rl_replace_line("", 0);
     rl_redisplay();
@@ -31,16 +32,16 @@ void setup_signal_handling(void)
     sigaction(SIGQUIT, &sa_quit, NULL);
 }
 
-int	main(__attribute__((unused)) int ac, __attribute__((unused)) char **av, char **envp)
+int main(__attribute__((unused)) int ac, __attribute__((unused)) char **av, char **envp)
 {
     setup_signal_handling();
-	using_history();
-	char **env = fill_env(envp);
-	while (1)
-	{
-		if (!build_prompt(&env))
-			break ;
-	}
-	rl_clear_history();
-	return (0);
+    using_history();
+    char **env = fill_env(envp);
+    while (1)
+    {
+        if (!build_prompt(&env))
+            break;
+    }
+    rl_clear_history();
+    return (0);
 }

@@ -50,6 +50,7 @@ typedef enum e_token_type {
 typedef struct s_token {
     char *content;
     t_token_type type;
+    bool single_quotes;
     struct s_token *next;
     struct s_token *prev;
 } t_token;
@@ -92,11 +93,11 @@ char		**fill_env(char **env);
 //parsing word
 void    handle_word(t_token **tokens, char *input, int *i);
 void    handle_quoted_word(t_token **tokens, char *input, int *i);
+void	handle_quote(t_token **tokens, char *input, int *i);
 
 //parsing redirection
 void    handle_input_redirection(t_token **tokens, char *input, int *i);
 void    handle_output_redirection(t_token **tokens, char *input, int *i);
-void	handle_quote(t_token **tokens, char *input, int *i);
 
 //command 
 t_command   *parse_command(t_token *tokens);

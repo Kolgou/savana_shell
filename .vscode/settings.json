@@ -2,6 +2,7 @@
     "files.associations": {
         "chrono": "c",
         "functional": "c",
-        "fcntl.h": "c"
+        "fcntl.h": "c",
+        "stdbool.h": "c"
     }
 }

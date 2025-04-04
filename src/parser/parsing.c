@@ -8,7 +8,7 @@ t_token	*create_token(char *content, t_token_type type)
 	if (!token)
 		return (NULL);
 	token->content = ft_strdup(content);
-	token->single_quotes = false;
+	token->single_quotes_t = false;
 	if (!token->content)
 	{
 		free(token);

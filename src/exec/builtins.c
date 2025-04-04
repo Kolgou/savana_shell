@@ -16,12 +16,11 @@ static bool is_n_option(const char *str)
     return (str[1] != '\0');
 }
 
-void    ft_echo(t_command *cmd, char **env)
+void    ft_echo(t_command *cmd)
 {
     bool n_option = false;
     int i = 1;
 
-    expand_var_env(cmd, env);
     while (cmd->args[i] && is_n_option(cmd->args[i]))
     {
         n_option = true;

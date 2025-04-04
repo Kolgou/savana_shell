@@ -8,7 +8,8 @@
 # include "libft/libft.h"
 # include <sys/wait.h>
 # include <fcntl.h>
-#include <stdbool.h>
+# include <stdbool.h>
+# include <sys/stat.h>
 
 #ifndef HOST_NAME_MAX
 # define HOST_NAME_MAX 64
@@ -50,7 +51,7 @@ typedef enum e_token_type {
 typedef struct s_token {
     char *content;
     t_token_type type;
-    bool single_quotes;
+    bool single_quotes_t;
     struct s_token *next;
     struct s_token *prev;
 } t_token;
@@ -67,6 +68,7 @@ typedef struct s_command {
     struct s_command *next;
     char    **env;
     int     test;
+    bool single_quotes;
 } t_command;
 
 //readline
@@ -130,7 +132,7 @@ int      check_correct_args(char *str);
 char     **create_updated_env(char **env, char *new_var);
 
 //builtins
-void     ft_echo(t_command *command, char **env);
+void     ft_echo(t_command *command);
 void     ft_export(t_command *cmd, char ***env_ptr);
 void     ft_cd(t_command *cmd);
 void     ft_env(char **env);

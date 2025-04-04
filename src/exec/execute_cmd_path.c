@@ -1,5 +1,4 @@
 #include "../../minishell.h"
-#include <stdbool.h>
 
 static int	execute_in_child(char *path, char **args, char **env, t_redirection *redirects)
 {
@@ -32,6 +31,7 @@ static int execute_absolute_path(char **args, char **paths, t_command *cmd, char
     char    *path;
     char    *tmp;
     int     i;
+    int     ret;
 
     i = 0;
     while (paths[i])
@@ -43,7 +43,7 @@ static int execute_absolute_path(char **args, char **paths, t_command *cmd, char
         free(tmp);
         if (!access(path, F_OK | X_OK))
         {
-            int ret = execute_in_child(path, args, env, cmd->redirect);
+            ret = execute_in_child(path, args, env, cmd->redirect);
             free(path);
             return (ret);
         }
@@ -55,9 +55,16 @@ static int execute_absolute_path(char **args, char **paths, t_command *cmd, char
 
 static int execute_cmd_env(t_command *cmd, char **paths, char **env)
 {
-    if (cmd->args && cmd->args[0])
-        if (cmd->args[0][0] == '$' || (cmd->args[1] && cmd->args[1][0] == '$'))
-            expand_var_env(cmd, env);
+    struct stat path_stat;
+
+    if (cmd->args[0] && stat(cmd->args[0], &path_stat) == 0)
+    {
+        if (S_ISDIR(path_stat.st_mode))
+        {
+            printf("%s: Is a directory\n", cmd->args[0]);
+            return (126);
+        }
+    }
     if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
 	{
 		if (!access(cmd->args[0], F_OK | X_OK))
@@ -107,8 +114,10 @@ int execute_with_redir(t_command *cmd, char ***env_ptr)
     int saved_stdout = dup(STDOUT_FILENO);
     char **env = *env_ptr;
 
+    if (cmd->single_quotes == false)
+        expand_var_env(cmd, *env_ptr);
     if (cmd->args && !ft_strcmp(cmd->args[0], "echo"))
-        ft_echo(cmd, env);
+        ft_echo(cmd);
     else if (cmd->args && !ft_strcmp(cmd->args[0], "export"))
         ft_export(cmd, env_ptr);
     else if (cmd->args && !ft_strcmp(cmd->args[0], "cd"))

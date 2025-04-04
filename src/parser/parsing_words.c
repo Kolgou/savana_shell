@@ -64,8 +64,6 @@ void    handle_quote(t_token **tokens, char *input, int *i)
 		len = 0;
         while (input[*i + len] && input[*i + len] != quote_type)
             len++;
-        if (input[*i + len] == '\'')
-            ;
         if (len > 0)
         {
             word = malloc(len + 1);
@@ -73,6 +71,8 @@ void    handle_quote(t_token **tokens, char *input, int *i)
             {
                 ft_strlcpy(word, &input[*i], len + 1);
                 add_token(tokens, create_token(word, WORD));
+				if (input[*i + len] == '\'')
+            		(*tokens)->single_quotes_t = true;
                 free(word);
             }
         }

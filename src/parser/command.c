@@ -11,6 +11,7 @@ static t_command  *create_command(void)
     new_commands->redirect = NULL;
     new_commands->next = NULL;
     new_commands->env = NULL;
+    new_commands->single_quotes = false;
     return (new_commands);
 }
 
@@ -79,6 +80,8 @@ static int  process_tokens(t_token **c_token, t_command **c_cmd)
 {
     if ((*c_token)->type == WORD)
     {
+        if ((*c_token)->single_quotes_t == true)
+            (*c_cmd)->single_quotes = true;
         add_arguments(*c_cmd, (*c_token)->content);
     }
     else if ((*c_token)->type == PIPE)

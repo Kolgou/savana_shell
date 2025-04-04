@@ -74,7 +74,6 @@ static void exec_input(char *input, char ***env_ptr)
     current = tokens;
 	cmd_list = parse_command(tokens);
     cmd_list->env = *env_ptr;
-    execute_commands(cmd_list, *env_ptr);
     while (current)
     {
         if (current->type == PIPE)

@@ -8,6 +8,7 @@
 # include "libft/libft.h"
 # include <sys/wait.h>
 # include <fcntl.h>
+# include <unistd.h>
 #include <stdbool.h>
 
 #ifndef HOST_NAME_MAX
@@ -114,7 +115,7 @@ void    free_env(char **env);
 //redirections
 int     apply_redirections(t_redirection *redirects);
 
-//heredoc
+//heredoczz
 int     heredoc_redir(t_redirection *redirect);
 
 //pipe
@@ -134,5 +135,6 @@ void     ft_export(t_command *cmd, char ***env_ptr);
 void     ft_cd(t_command *cmd);
 void     ft_env(char **env);
 void     ft_unset(t_command *cmd, char ***env);
+void     ft_exit(t_command *cmd);
 
 #endif

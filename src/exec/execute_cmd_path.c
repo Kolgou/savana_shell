@@ -107,7 +107,9 @@ int execute_with_redir(t_command *cmd, char ***env_ptr)
     int saved_stdout = dup(STDOUT_FILENO);
     char **env = *env_ptr;
 
-    if (cmd->args && !ft_strcmp(cmd->args[0], "echo"))
+    if (cmd->args && !ft_strcmp(cmd->args[0], "exit"))
+        ft_exit(cmd);
+    else if (cmd->args && !ft_strcmp(cmd->args[0], "echo"))
         ft_echo(cmd, env);
     else if (cmd->args && !ft_strcmp(cmd->args[0], "export"))
         ft_export(cmd, env_ptr);

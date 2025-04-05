@@ -145,3 +145,48 @@ void ft_unset(t_command *cmd, char ***env)
         i++;
     }
 }
+
+static bool is_numeric(const char *str)
+{
+    if (!str || *str == '\0')
+        return (false);
+    if (*str == '-' || *str == '+')
+        str++;
+    while (*str)
+    {
+        if (*str < '0' || *str > '9')
+            return (false);
+        str++;
+    }
+    return (true);
+}
+
+static void print_error(const char *prefix, const char *arg, const char *suffix)
+{
+    if (prefix)
+        write(STDERR_FILENO, prefix, ft_strlen(prefix));
+    if (arg)
+        write(STDERR_FILENO, arg, ft_strlen(arg));
+    if (suffix)
+        write(STDERR_FILENO, suffix, ft_strlen(suffix));
+}
+
+void ft_exit(t_command *cmd)
+{
+    write(STDOUT_FILENO, "exit\n", 5);
+    if (cmd->args[1] && cmd->args[2])
+    {
+        print_error("bash: exit: ", NULL, "too many arguments\n");
+        return ;
+    }
+    if (cmd->args[1])
+    {
+        if (!is_numeric(cmd->args[1]))
+        {
+            print_error("bash: exit: ", cmd->args[1], ": numeric argument required\n");
+            exit(255);
+        }
+        exit(ft_atoi(cmd->args[1]) % 256);
+    }
+    exit(0);
+}

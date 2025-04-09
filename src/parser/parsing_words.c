@@ -42,7 +42,7 @@ static char	*extract_quoted_word(char *input, int *i)
 
 void	handle_quoted_word(t_token **tokens, char *input, int *i)
 {
-	char *word;
+	char	*word;
 
 	word = extract_quoted_word(input, i);
 	if (!word)
@@ -51,33 +51,45 @@ void	handle_quoted_word(t_token **tokens, char *input, int *i)
 	free(word);
 }
 
-void    handle_quote(t_token **tokens, char *input, int *i)
+static char	*extract_quote_content(char *input, int *i, char quote_type,
+		int *len)
 {
-    char quote_type;
-    int len;
-    char *word;
-    
-    quote_type = input[*i];
-    if (quote_type == '\'' || quote_type == '\"')
-    {
+	char	*word;
+
+	*len = 0;
+	while (input[*i + *len] && input[*i + *len] != quote_type)
+		(*len)++;
+	if (*len <= 0)
+		return (NULL);
+	word = malloc(*len + 1);
+	if (!word)
+		return (NULL);
+	ft_strlcpy(word, &input[*i], *len + 1);
+	return (word);
+}
+
+void	handle_quote(t_token **tokens, char *input, int *i)
+{
+	char	quote_type;
+	int		len;
+	char	*word;
+	t_token	*new_token;
+
+	quote_type = input[*i];
+	if (quote_type == '\'' || quote_type == '\"')
+	{
 		(*i)++;
-		len = 0;
-        while (input[*i + len] && input[*i + len] != quote_type)
-            len++;
-        if (len > 0)
-        {
-            word = malloc(len + 1);
-            if (word)
-            {
-                ft_strlcpy(word, &input[*i], len + 1);
-                add_token(tokens, create_token(word, WORD));
-				if (input[*i + len] == '\'')
-            		(*tokens)->single_quotes_t = true;
-                free(word);
-            }
-        }
-        *i += len;
+		word = extract_quote_content(input, i, quote_type, &len);
+		if (word)
+		{
+			new_token = create_token(word, WORD);
+			add_token(tokens, new_token);
+			if (quote_type == '\'')
+				(*tokens)->single_quotes_t = true;
+			free(word);
+		}
+		*i += len;
 		if (input[*i] == quote_type)
-            (*i)++;
-    }
+			(*i)++;
+	}
 }

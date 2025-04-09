@@ -19,21 +19,21 @@ t_token	*create_token(char *content, t_token_type type)
 	return (token);
 }
 
-void add_token(t_token **tokens, t_token *new_token)
+void	add_token(t_token **tokens, t_token *new_token)
 {
-    t_token *current;
+	t_token	*current;
 
-    if (!*tokens)
-    {
-        *tokens = new_token;
-        new_token->prev = NULL;
-        return;
-    }
-    current = *tokens;
-    while (current->next)
-        current = current->next;
-    current->next = new_token;
-    new_token->prev = current;
+	if (!*tokens)
+	{
+		*tokens = new_token;
+		new_token->prev = NULL;
+		return ;
+	}
+	current = *tokens;
+	while (current->next)
+		current = current->next;
+	current->next = new_token;
+	new_token->prev = current;
 }
 
 static void	handle_operator(t_token **tokens, char *input, int *i)
@@ -68,19 +68,4 @@ t_token	*tokenize_input(char *input)
 			handle_word(&tokens, input, &i);
 	}
 	return (tokens);
-}
-
-void	print_tokens(t_token *tokens)
-{
-	t_token *current;
-	const char *type_strings[] = {"WORD", "PIPE", "REDIR_IN", "REDIR_OUT",
-		"APPEND", "HEREDOC"};
-
-	current = tokens;
-	while (current)
-	{
-		printf("Token: type=%s, content='%s'\n", type_strings[current->type],
-			current->content);
-		current = current->next;
-	}
 }

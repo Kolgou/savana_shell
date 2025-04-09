@@ -14,10 +14,14 @@ SRC_FILES = parser/readline.c \
          parser/parsing_words.c \
          parser/free.c \
 		 parser/command.c \
+		 parser/command_utils.c \
 		 parser/checking.c \
+		 exec/execute_commands.c \
 		 exec/execute_cmd_path.c \
 		 exec/builtins.c \
 		 exec/export_utils.c \
+		 exec/unset_utils.c \
+		 exec/echo_utils.c \
 		 redirections/handle_redir.c \
 		 redirections/heredoc.c \
 		 pipe/handle_pipe.c \

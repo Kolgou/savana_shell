@@ -3,6 +3,8 @@
         "chrono": "c",
         "functional": "c",
         "fcntl.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "sstream": "c",
+        "wait.h": "c"
     }
 }

@@ -1,144 +1,116 @@
 #include "../../minishell.h"
 
-static int	execute_in_child(char *path, char **args, char **env, t_redirection *redirects)
+int	execute_in_child(char *path, char **args, char **env,
+		t_command *cmd)
 {
-    pid_t    pid;
-    int      status;
+	pid_t	pid;
+	int		status;
 
-    pid = fork();
-    if (pid == 0)
-    {
-        if (redirects)
-            if (!apply_redirections(redirects))
-                exit(EXIT_FAILURE);
-        if (execve(path, args, env) == -1)
-            exit(EXIT_FAILURE);
-        exit(EXIT_SUCCESS);
-    }
-    else 
-    {
-        waitpid(pid, &status, 0);
-        if (WIFEXITED(status))
-            return (WEXITSTATUS(status));
-        else
-            return (1);
-    }
-    return (0);
+	pid = fork();
+	if (pid == 0)
+	{
+		if (cmd->redirect)
+			if (!apply_redirections(cmd->redirect))
+			{
+				free_commands(cmd);
+            	free(path); 
+				exit(EXIT_FAILURE);
+			}
+		if (execve(path, args, env) == -1)
+		{
+			free_commands(cmd);
+            free(path); 
+			exit(EXIT_FAILURE);
+		}
+		free_commands(cmd);
+		free(path);
+		exit(EXIT_SUCCESS);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			return (WEXITSTATUS(status));
+		else
+			return (1);
+	}
+	return (0);
 }
 
-static int execute_absolute_path(char **args, char **paths, t_command *cmd, char **env)
+int	handle_direct_path(t_command *cmd, char **env)
 {
-    char    *path;
-    char    *tmp;
-    int     i;
-    int     ret;
+	struct stat	path_stat;
 
-    i = 0;
-    while (paths[i])
-    {
-        path = strdup(paths[i]);
-        tmp = ft_strjoin(path, "/");
-        free(path);
-        path = ft_strjoin(tmp, args[0]);
-        free(tmp);
-        if (!access(path, F_OK | X_OK))
-        {
-            ret = execute_in_child(path, args, env, cmd->redirect);
-            free(path);
-            return (ret);
-        }
-        free(path);
-        i++;
-    }
-    return (-1);
-}
-
-static int execute_cmd_env(t_command *cmd, char **paths, char **env)
-{
-    struct stat path_stat;
-
-    if (cmd->args[0] && stat(cmd->args[0], &path_stat) == 0)
-    {
-        if (S_ISDIR(path_stat.st_mode))
-        {
-            printf("%s: Is a directory\n", cmd->args[0]);
-            return (126);
-        }
-    }
-    if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
+	if (cmd->args[0] && stat(cmd->args[0], &path_stat) == 0)
+	{
+		if (S_ISDIR(path_stat.st_mode))
+		{
+			printf("%s: Is a directory\n", cmd->args[0]);
+			return (126);
+		}
+	}
+	if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
 	{
 		if (!access(cmd->args[0], F_OK | X_OK))
-			return execute_in_child(cmd->args[0], cmd->args, env, cmd->redirect);
-        printf(BOLD_RED "أمر: %s: No such file or directory\n", cmd->args[0]);
+			return (execute_in_child(cmd->args[0], cmd->args, env,
+					cmd));
+		printf(BOLD_RED "أمر: %s: No such file or directory\n", cmd->args[0]);
 		return (127);
 	}
-    int ret = execute_absolute_path(cmd->args, paths, cmd, env);
-    if (ret == -1)
-    {
-        printf(BOLD_RED "Command %s not found 🤓\n", cmd->args[0]);
-        return (127);
-    }
-    return (ret);
+	return (-2);
 }
 
-int    execute_cmd(t_command *cmd, char **env)
+int	execute_cmd_env(t_command *cmd, char **paths, char **env)
 {
-    int     i;
-    char    *path;
-    char    **paths;
-    int     result;
+	int	ret;
 
-    path = NULL;
-    paths = NULL;
-    i = 0;
-    while (env[i])
-    {
-        if (!strncmp(env[i], "PATH=", 5))
-        {
-            path = strdup(env[i] + 5);
-            paths = ft_split(path, ':');
-            break ;
-        }
-        i++;
-    }
-    result = -1;
-    result = execute_cmd_env(cmd, paths, env);
-    free(path);
-    free(paths);
-    return (result);
+	ret = handle_direct_path(cmd, env);
+	if (ret != -2)
+		return (ret);
+	ret = execute_absolute_path(cmd->args, paths, cmd, env);
+	if (ret == -1)
+	{
+		printf(BOLD_RED "Command %s not found 🤓\n", cmd->args[0]);
+		return (127);
+	}
+	return (ret);
 }
 
-int execute_with_redir(t_command *cmd, char ***env_ptr)
+int	check_if_builtin(t_command *cmd)
 {
-    int saved_stdin = dup(STDIN_FILENO);
-    int saved_stdout = dup(STDOUT_FILENO);
-    char **env = *env_ptr;
+	if (cmd->args && !ft_strcmp(cmd->args[0], "echo"))
+		return (1);
+	else if (cmd->args && !ft_strcmp(cmd->args[0], "export"))
+		return (1);
+	else if (cmd->args && !ft_strcmp(cmd->args[0], "cd"))
+		return (1);
+	else if (cmd->args && !ft_strcmp(cmd->args[0], "env"))
+		return (1);
+	else if (cmd->args && !ft_strcmp(cmd->args[0], "unset"))
+		return (1);
+	else if (cmd->args && cmd->args[0])
+		return (1);
+	return (0);
+}
 
-    if (cmd->single_quotes == false)
-        expand_var_env(cmd, *env_ptr);
-    if (cmd->args && !ft_strcmp(cmd->args[0], "echo"))
-        ft_echo(cmd);
-    else if (cmd->args && !ft_strcmp(cmd->args[0], "export"))
-        ft_export(cmd, env_ptr);
-    else if (cmd->args && !ft_strcmp(cmd->args[0], "cd"))
-        ft_cd(cmd);
-    else if (cmd->args && !ft_strcmp(cmd->args[0], "env"))
-        ft_env(env);
-    else if (cmd->args && !ft_strcmp(cmd->args[0], "unset"))
-        ft_unset(cmd, env_ptr);
-    else if (cmd->args && cmd->args[0])
-        execute_cmd(cmd, env);
-    else if (cmd->redirect && !apply_redirections(cmd->redirect))
-    {
-        dup2(saved_stdin, STDIN_FILENO);
-        dup2(saved_stdout, STDOUT_FILENO);
-        close(saved_stdin);
-        close(saved_stdout);
-        return (0);
-    }
-    dup2(saved_stdin, STDIN_FILENO);
-    dup2(saved_stdout, STDOUT_FILENO);
-    close(saved_stdin);
-    close(saved_stdout);
-    return (1);
+int	execute_command_by_type(t_command *cmd, char ***env_ptr)
+{
+	char	**env;
+
+	env = *env_ptr;
+	if (cmd->single_quotes == false)
+		cmd->exit_s = expand_var_env(cmd, *env_ptr);
+	if (cmd->args && !ft_strcmp(cmd->args[0], "echo"))
+		ft_echo(cmd);
+	else if (cmd->args && !ft_strcmp(cmd->args[0], "export"))
+		cmd->exit_s = ft_export(cmd, env_ptr);
+	else if (cmd->args && !ft_strcmp(cmd->args[0], "cd"))
+		cmd->exit_s = ft_cd(cmd);
+	else if (cmd->args && !ft_strcmp(cmd->args[0], "env"))
+		cmd->exit_s = ft_env(env);
+	else if (cmd->args && !ft_strcmp(cmd->args[0], "unset"))
+		cmd->exit_s = ft_unset(cmd, env_ptr);
+	else if (cmd->args && cmd->args[0])
+		cmd->exit_s = execute_cmd(cmd, env);
+	return (cmd->exit_s);
 }

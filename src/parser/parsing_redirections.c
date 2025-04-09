@@ -27,4 +27,3 @@ void	handle_output_redirection(t_token **tokens, char *input, int *i)
 		(*i)++;
 	}
 }
-

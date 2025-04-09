@@ -28,7 +28,7 @@ int	get_word_length(char *input, int i)
 		if (!in_single_quote && !in_double_quote)
 		{
 			if (is_whitespace(input[i + len]) || is_operator_char(input[i
-					+ len]))
+						+ len]))
 				break ;
 		}
 		len++;
@@ -40,13 +40,13 @@ char	**fill_env(char **env)
 {
 	int		i;
 	int		count;
-	char    **tmp;
+	char	**tmp;
 
 	i = -1;
 	count = 0;
 	while (env[count])
 		count++;
-	tmp = malloc(sizeof(char*) * (count + 1));
+	tmp = malloc(sizeof(char *) * (count + 1));
 	if (!tmp)
 		return (NULL);
 	i = -1;
@@ -55,4 +55,3 @@ char	**fill_env(char **env)
 	tmp[count] = NULL;
 	return (tmp);
 }
-

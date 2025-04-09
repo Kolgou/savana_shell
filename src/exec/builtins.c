@@ -1,146 +1,93 @@
 #include "../../minishell.h"
 
-static bool is_n_option(const char *str)
+void	ft_echo(t_command *cmd)
 {
-    if (str[0] != '-')
-        return (false);
+	bool	n_option;
+	int		i;
 
-    int i = 1;
-    while (str[i] != '\0')
-    {
-        if (str[i] != 'n')
-            return (false);
-        i++;
-    }
-
-    return (str[1] != '\0');
+	n_option = false;
+	i = 1;
+	while (cmd->args[i] && is_n_option(cmd->args[i]))
+	{
+		n_option = true;
+		i++;
+	}
+	while (cmd->args[i])
+	{
+		printf("%s", cmd->args[i]);
+		i++;
+		if (cmd->args[i])
+			printf(" ");
+	}
+	if (!n_option)
+		printf("\n");
 }
 
-void    ft_echo(t_command *cmd)
+int	ft_export(t_command *cmd, char ***env_ptr)
 {
-    bool n_option = false;
-    int i = 1;
+	char	*new_var;
+	char	**env;
 
-    while (cmd->args[i] && is_n_option(cmd->args[i]))
-    {
-        n_option = true;
-        i++;
-    }
-    while (cmd->args[i])
-    {
-        printf("%s", cmd->args[i]);
-        i++;
-        if (cmd->args[i])
-            printf(" ");
-    }
-    if (!n_option)
-        printf("\n");
+	env = *env_ptr;
+	if (!cmd->args[1])
+	{
+		sort_env(cmd->env);
+		return (0);
+	}
+	if (!check_correct_args(cmd->args[1]))
+	{
+		printf("Export failed: invalid identifier\n");
+		return (1);
+	}
+	new_var = ft_strdup(cmd->args[1]);
+	if (!new_var)
+		return (1);
+	create_new_env(new_var, env, env_ptr, cmd);
+	return (0);
 }
 
-void ft_export(t_command *cmd, char ***env_ptr)
+int	ft_cd(t_command *cmd)
 {
-    int i;
-    char *new_var;
-    char **new_env;
-    char **env = *env_ptr;
-
-    if (!cmd->args[1])
-    {
-        sort_env(cmd->env);
-        return;
-    }
-    if (!check_correct_args(cmd->args[1]))
-    {
-        printf("Export failed: invalid identifier\n");
-        return;
-    }
-    new_var = ft_strdup(cmd->args[1]);
-    if (!new_var)
-        return;
-    i = 0;
-    while (env[i])
-        i++;
-    new_env = malloc(sizeof(char *) * (i + 2));
-    if (!new_env)
-    {
-        free(new_var);
-        return;
-    }
-    i = 0;
-    while (env[i])
-    {
-        new_env[i] = env[i];
-        i++;
-    }
-    new_env[i] = new_var;
-    new_env[i + 1] = NULL;
-    if (cmd->env != env)
-        free(cmd->env);
-    cmd->env = new_env;
-    *env_ptr = new_env;
+	if (!cmd->args[1])
+	{
+		printf(BOLD_RED "cd: missing argument\n");
+		return (1);
+	}
+	if (chdir(cmd->args[1]) != 0)
+	{
+		perror(BOLD_RED "cd");
+		return (1);
+	}
+	return (0);
 }
 
-void    ft_cd(t_command *cmd)
+int	ft_env(char **env)
 {
-    if (!cmd->args[1])
-    {
-        printf(BOLD_RED "cd: missing argument\n");
-        return;
-    }
-    if (chdir(cmd->args[1]) != 0)
-    {
-        perror(BOLD_RED "cd");
-    }
+	if (!env)
+		return (1);
+	while (*env != NULL)
+	{
+		printf("%s\n", *env);
+		env++;
+	}
+	return (0);
 }
 
-void    ft_env(char **env)
+int	ft_unset(t_command *cmd, char ***env)
 {
-    if (!env)
-        return ;
-    while (*env != NULL)
-    {
-        printf("%s\n", *env);
-        env++;
-    }
-}
+	int	i;
+	int	count;
 
-void ft_unset(t_command *cmd, char ***env)
-{
-    int i;
-    int j;
-    int k;
-    int count = 0;
-    int varlen;
-
-    while ((*env)[count])
-        count++;
-
-    if (!cmd->args[1])
-        return;
-
-    i = 1;
-    while (cmd->args[i])
-    {
-        varlen = ft_strlen(cmd->args[i]);
-        j = 0;
-        while (j < count)
-        {
-            if (ft_strncmp((*env)[j], cmd->args[i], varlen) == 0 && (*env)[j][varlen] == '=')
-            {
-                free((*env)[j]);
-
-                k = j;
-                while (k < count - 1)
-                {
-                    (*env)[k] = (*env)[k + 1];
-                    k++;
-                }
-                (*env)[count - 1] = NULL;
-                count--;
-                j--;
-            }
-            j++;
-        }
-        i++;
-    }
+	count = 0;
+	while ((*env)[count])
+		count++;
+	if (!cmd->args[1])
+		return (0);
+	i = 1;
+	while (cmd->args[i])
+	{
+		remove_env_var(env, cmd->args[i], &count);
+		i++;
+	}
+	return (0);
 }

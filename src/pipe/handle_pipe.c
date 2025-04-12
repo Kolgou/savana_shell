@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_pipe.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alaualik <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/12 20:32:23 by alaualik          #+#    #+#             */
+/*   Updated: 2025/04/12 20:33:55 by alaualik         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minishell.h"
 
 static void	child_processed_pcmd(t_command *current, int *pipe_fd,
@@ -56,7 +68,7 @@ static int	process_last_command(t_command *current, pid_t *pid, char **env,
 		signal(SIGQUIT, SIG_DFL);
 		close(saved_stdin);
 		if (current->redirect && !apply_redirections(current->redirect))
-		{	
+		{
 			free_commands(current);
 			free_array(env);
 			exit(EXIT_FAILURE);
@@ -79,13 +91,13 @@ static int	execute_pipeline(t_command *command, char **env, int saved_stdin)
 	while (current && current->next)
 	{
 		if (process_piped_command(current, &pid, env, saved_stdin) == -1)
-            return (-1);
+			return (-1);
 		current = current->next;
 	}
 	if (current)
 	{
 		if (process_last_command(current, &pid, env, saved_stdin) == -1)
-            return (-1);
+			return (-1);
 	}
 	while (wait(&status) > 0)
 		continue ;

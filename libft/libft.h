@@ -6,12 +6,13 @@
 /*   By: aaitbrah <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:40:45 by aaitbrah          #+#    #+#             */
-/*   Updated: 2024/10/10 14:40:47 by aaitbrah         ###   ########.fr       */
+/*   Updated: 2025/04/12 19:38:51 by alaualik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
+
 # include <stdlib.h>
 # include <unistd.h>
 
@@ -19,11 +20,11 @@ typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
-}					t_list;
+}	t_list;
 
-char	      *ft_strcpy(char *dest, const char *src);
-char	      *ft_strncpy(char *dest, const char *src, size_t n);
-char	      *ft_strstr(const char *haystack, const char *needle);
+char				*ft_strcpy(char *dest, const char *src);
+char				*ft_strncpy(char *dest, const char *src, size_t n);
+char				*ft_strstr(const char *haystack, const char *needle);
 void				*ft_memchr(const void *s, int c, size_t n);
 void				ft_bzero(void *s, size_t n);
 void				*ft_calloc(size_t nmemb, size_t size);

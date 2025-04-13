@@ -6,7 +6,7 @@
 /*   By: alaualik <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 20:30:18 by alaualik          #+#    #+#             */
-/*   Updated: 2025/04/12 20:30:20 by alaualik         ###   ########.fr       */
+/*   Updated: 2025/04/13 16:31:23 by alaualik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ int	execute_in_child(char *path, char **args, char **env,
 			if (!apply_redirections(cmd->redirect))
 			{
 				free_commands(cmd);
-            	free(path); 
+				free(path);
 				exit(EXIT_FAILURE);
 			}
 		if (execve(path, args, env) == -1)
 		{
 			free_commands(cmd);
-            free(path); 
+			free(path);
 			exit(EXIT_FAILURE);
 		}
 		free_commands(cmd);

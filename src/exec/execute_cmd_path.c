@@ -12,39 +12,40 @@
 
 #include "../../minishell.h"
 
-int	execute_in_child(char *path, char **args, char **env,
-		t_command *cmd)
+static int	handle_child_process(char *path, char **args,
+								char **env, t_command *cmd)
+{
+	if (cmd->redirect && !apply_redirections(cmd->redirect))
+	{
+		free_commands(cmd);
+		free(path);
+		exit(EXIT_FAILURE);
+	}
+	if (execve(path, args, env) == -1)
+	{
+		free_commands(cmd);
+		free(path);
+		exit(EXIT_FAILURE);
+	}
+	free_commands(cmd);
+	free(path);
+	exit(EXIT_SUCCESS);
+}
+
+int	execute_in_child(char *path, char **args, char **env, t_command *cmd)
 {
 	pid_t	pid;
 	int		status;
 
 	pid = fork();
 	if (pid == 0)
-	{
-		if (cmd->redirect)
-			if (!apply_redirections(cmd->redirect))
-			{
-				free_commands(cmd);
-            	free(path); 
-				exit(EXIT_FAILURE);
-			}
-		if (execve(path, args, env) == -1)
-		{
-			free_commands(cmd);
-            free(path); 
-			exit(EXIT_FAILURE);
-		}
-		free_commands(cmd);
-		free(path);
-		exit(EXIT_SUCCESS);
-	}
+		handle_child_process(path, args, env, cmd);
 	else
 	{
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 			return (WEXITSTATUS(status));
-		else
-			return (1);
+		return (1);
 	}
 	return (0);
 }
@@ -64,8 +65,7 @@ int	handle_direct_path(t_command *cmd, char **env)
 	if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
 	{
 		if (!access(cmd->args[0], F_OK | X_OK))
-			return (execute_in_child(cmd->args[0], cmd->args, env,
-					cmd));
+			return (execute_in_child(cmd->args[0], cmd->args, env, cmd));
 		printf(BOLD_RED "أمر: %s: No such file or directory\n", cmd->args[0]);
 		return (127);
 	}
@@ -92,6 +92,8 @@ int	check_if_builtin(t_command *cmd)
 {
 	if (cmd->args && !ft_strcmp(cmd->args[0], "echo"))
 		return (1);
+	else if (cmd->args && !ft_strcmp(cmd->args[0], "exit"))
+		return (1);
 	else if (cmd->args && !ft_strcmp(cmd->args[0], "export"))
 		return (1);
 	else if (cmd->args && !ft_strcmp(cmd->args[0], "cd"))
@@ -116,6 +118,8 @@ int	execute_command_by_type(t_command *cmd, char ***env_ptr)
 		ft_echo(cmd);
 	else if (cmd->args && !ft_strcmp(cmd->args[0], "export"))
 		cmd->exit_s = ft_export(cmd, env_ptr);
+	else if (cmd->args && !ft_strcmp(cmd->args[0], "exit"))
+		cmd->exit_s = ft_exit(cmd);
 	else if (cmd->args && !ft_strcmp(cmd->args[0], "cd"))
 		cmd->exit_s = ft_cd(cmd);
 	else if (cmd->args && !ft_strcmp(cmd->args[0], "env"))

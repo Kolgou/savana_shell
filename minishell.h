@@ -6,7 +6,7 @@
 /*   By: alaualik <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 20:35:19 by alaualik          #+#    #+#             */
-/*   Updated: 2025/04/12 20:37:17 by alaualik         ###   ########.fr       */
+/*   Updated: 2025/04/12 23:33:46 by alaualik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,7 @@ int							ft_export(t_command *cmd, char ***env_ptr);
 int							ft_cd(t_command *cmd);
 int							ft_env(char **env);
 int							ft_unset(t_command *cmd, char ***env);
+int							ft_exit(t_command *cmd);
 
 // main
 void						set_signals_for_readline(void);

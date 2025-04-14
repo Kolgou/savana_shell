@@ -50,7 +50,7 @@ void	set_signals_for_execution(void)
 	sa.sa_handler = sigint_execution_handler;
 	sa.sa_flags = SA_RESTART;
 	sigemptyset(&sa.sa_mask);
-	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 }
 
 int	main(__attribute__((unused)) int ac, __attribute__((unused)) char **av,

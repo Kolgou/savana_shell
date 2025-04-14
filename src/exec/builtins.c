@@ -103,3 +103,39 @@ int	ft_unset(t_command *cmd, char ***env)
 	}
 	return (0);
 }
+
+static bool	is_numeric(const char *str)
+{
+	if (!str || *str == '\0')
+		return (false);
+	if (*str == '-' || *str == '+')
+		str++;
+	while (*str)
+	{
+		if (*str < '0' || *str > '9')
+			return (false);
+		str++;
+	}
+	return (true);
+}
+
+int	ft_exit(t_command *cmd)
+{
+	printf("exit\n");
+	if (cmd->args[1] && cmd->args[2])
+	{
+		printf("bash: exit: too many arguments\n");
+		return (1);
+	}
+	if (cmd->args[1])
+	{
+		if (!is_numeric(cmd->args[1]))
+		{
+			printf("bash: exit: %s: numeric argument required\n", cmd->args[1]);
+			exit(255);
+		}
+		exit(ft_atoi(cmd->args[1]) % 256);
+	}
+	exit(0);
+	return (0);
+}

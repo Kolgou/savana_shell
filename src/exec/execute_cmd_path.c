@@ -6,7 +6,7 @@
 /*   By: alaualik <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 20:30:18 by alaualik          #+#    #+#             */
-/*   Updated: 2025/04/13 16:31:23 by alaualik         ###   ########.fr       */
+/*   Updated: 2025/04/14 10:54:21 by alaualik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ int	check_if_builtin(t_command *cmd)
 {
 	if (cmd->args && !ft_strcmp(cmd->args[0], "echo"))
 		return (1);
+	else if (cmd->args && !ft_strcmp(cmd->args[0], "exit"))
+		return (1);
 	else if (cmd->args && !ft_strcmp(cmd->args[0], "export"))
 		return (1);
 	else if (cmd->args && !ft_strcmp(cmd->args[0], "cd"))
@@ -116,6 +118,8 @@ int	execute_command_by_type(t_command *cmd, char ***env_ptr)
 		ft_echo(cmd);
 	else if (cmd->args && !ft_strcmp(cmd->args[0], "export"))
 		cmd->exit_s = ft_export(cmd, env_ptr);
+	else if (cmd->args && !ft_strcmp(cmd->args[0], "exit"))
+		cmd->exit_s = ft_exit(cmd);
 	else if (cmd->args && !ft_strcmp(cmd->args[0], "cd"))
 		cmd->exit_s = ft_cd(cmd);
 	else if (cmd->args && !ft_strcmp(cmd->args[0], "env"))

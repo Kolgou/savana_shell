@@ -1,29 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo_utils.c                                       :+:      :+:    :+:   */
+/*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alaualik <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/12 20:30:30 by alaualik          #+#    #+#             */
-/*   Updated: 2025/04/12 20:30:36 by alaualik         ###   ########.fr       */
+/*   Created: 2025/04/14 11:46:21 by alaualik          #+#    #+#             */
+/*   Updated: 2025/04/14 11:46:44 by alaualik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "libft.h"
 
-bool	is_n_option(const char *str)
+char	*ft_strstr(const char *haystack, const char *needle)
 {
-	int		i;
+	size_t	i;
+	size_t	j;
+	size_t	needle_len;
 
-	if (str[0] != '-')
-		return (false);
-	i = 1;
-	while (str[i] != '\0')
+	needle_len = ft_strlen(needle);
+	if (needle_len == 0)
+		return ((char *)haystack);
+	i = 0;
+	while (haystack[i])
 	{
-		if (str[i] != 'n')
-			return (false);
+		if (haystack[i] == needle[0])
+		{
+			j = 1;
+			while (needle[j] && haystack[i + j] == needle[j])
+				j++;
+			if (j == needle_len)
+				return ((char *)(haystack + i));
+		}
 		i++;
 	}
-	return (str[1] != '\0');
+	return (NULL);
 }

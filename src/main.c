@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alaualik <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/12 20:32:06 by alaualik          #+#    #+#             */
+/*   Updated: 2025/04/12 20:32:07 by alaualik         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #define _POSIX_C_SOURCE 200809L
 #include "../minishell.h"
 #include <signal.h>
@@ -38,7 +50,7 @@ void	set_signals_for_execution(void)
 	sa.sa_handler = sigint_execution_handler;
 	sa.sa_flags = SA_RESTART;
 	sigemptyset(&sa.sa_mask);
-	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 }
 
 int	main(__attribute__((unused)) int ac, __attribute__((unused)) char **av,

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alaualik <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/12 20:29:26 by alaualik          #+#    #+#             */
+/*   Updated: 2025/04/12 20:29:50 by alaualik         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minishell.h"
 
 static t_command	*create_command(void)
@@ -39,8 +51,12 @@ static int	add_arguments(t_command *cmd, char *args)
 	}
 	new_args[i] = ft_strdup(args);
 	new_args[i + 1] = NULL;
+<<<<<<< HEAD
 	free(cmd->args);
 	cmd->args = new_args; 
+=======
+	cmd->args = new_args;
+>>>>>>> 7d14830e21e0fec4154434fb2ffd9d85446fa65e
 	return (1);
 }
 

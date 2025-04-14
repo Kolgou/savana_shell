@@ -19,6 +19,7 @@ SRC_FILES = parser/readline.c \
 		 exec/execute_commands.c \
 		 exec/execute_cmd_path.c \
 		 exec/builtins.c \
+		 exec/second_builtins.c \
 		 exec/export_utils.c \
 		 exec/unset_utils.c \
 		 exec/echo_utils.c \

@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo_utils.c                                       :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alaualik <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/12 20:30:30 by alaualik          #+#    #+#             */
-/*   Updated: 2025/04/12 20:30:36 by alaualik         ###   ########.fr       */
+/*   Created: 2025/04/14 11:47:28 by alaualik          #+#    #+#             */
+/*   Updated: 2025/04/14 11:47:40 by alaualik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "libft.h"
 
-bool	is_n_option(const char *str)
+char	*ft_strcpy(char *dest, const char *src)
 {
-	int		i;
+	char	*ptr;
 
-	if (str[0] != '-')
-		return (false);
-	i = 1;
-	while (str[i] != '\0')
+	ptr = dest;
+	while (*src)
 	{
-		if (str[i] != 'n')
-			return (false);
-		i++;
+		*ptr = *src;
+		ptr++;
+		src++;
 	}
-	return (str[1] != '\0');
+	*ptr = '\0';
+	return (dest);
 }

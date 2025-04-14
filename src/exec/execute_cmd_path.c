@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_cmd_path.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alaualik <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/12 20:30:18 by alaualik          #+#    #+#             */
+/*   Updated: 2025/04/14 11:55:15 by alaualik         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minishell.h"
 
 int	execute_in_child(char *path, char **args, char **env,
@@ -10,16 +22,18 @@ int	execute_in_child(char *path, char **args, char **env,
 	if (pid == 0)
 	{
 		if (cmd->redirect)
+		{
 			if (!apply_redirections(cmd->redirect))
 			{
 				free_commands(cmd);
-            	free(path); 
+				free(path);
 				exit(EXIT_FAILURE);
 			}
+		}
 		if (execve(path, args, env) == -1)
 		{
 			free_commands(cmd);
-            free(path); 
+			free(path);
 			exit(EXIT_FAILURE);
 		}
 		free_commands(cmd);
@@ -80,6 +94,8 @@ int	check_if_builtin(t_command *cmd)
 {
 	if (cmd->args && !ft_strcmp(cmd->args[0], "echo"))
 		return (1);
+	else if (cmd->args && !ft_strcmp(cmd->args[0], "exit"))
+		return (1);
 	else if (cmd->args && !ft_strcmp(cmd->args[0], "export"))
 		return (1);
 	else if (cmd->args && !ft_strcmp(cmd->args[0], "cd"))
@@ -104,6 +120,8 @@ int	execute_command_by_type(t_command *cmd, char ***env_ptr)
 		ft_echo(cmd);
 	else if (cmd->args && !ft_strcmp(cmd->args[0], "export"))
 		cmd->exit_s = ft_export(cmd, env_ptr);
+	else if (cmd->args && !ft_strcmp(cmd->args[0], "exit"))
+		cmd->exit_s = ft_exit(cmd);
 	else if (cmd->args && !ft_strcmp(cmd->args[0], "cd"))
 		cmd->exit_s = ft_cd(cmd);
 	else if (cmd->args && !ft_strcmp(cmd->args[0], "env"))

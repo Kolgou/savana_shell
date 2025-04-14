@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alaualik <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/12 20:35:19 by alaualik          #+#    #+#             */
+/*   Updated: 2025/04/14 10:55:12 by alaualik         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -124,8 +136,8 @@ int							process_redirection(t_token **c_token,
 								t_command **c_cmd);
 
 // execute_cmd_path
-int							execute_in_child(char *path, char **args, char **env,
-							t_command *cmd);
+int							execute_in_child(char *path, char **args,
+								char **env, t_command *cmd);
 int							handle_direct_path(t_command *cmd, char **env);
 int							execute_cmd_env(t_command *cmd, char **paths,
 								char **env);
@@ -177,7 +189,7 @@ int							ft_export(t_command *cmd, char ***env_ptr);
 int							ft_cd(t_command *cmd);
 int							ft_env(char **env);
 int							ft_unset(t_command *cmd, char ***env);
-
+int							ft_exit(t_command *cmd);
 // main
 void						set_signals_for_readline(void);
 void						set_signals_for_execution(void);

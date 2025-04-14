@@ -50,16 +50,11 @@ static void	exec_input(char *input, char ***env_ptr)
 	{
 		set_signals_for_execution();
 		if (has_pipes)
-		{
 			g_last_exit_status = pipe_handler(cmd_list, env_ptr);
-			free_commands(cmd_list);
-		}
 		else
-		{
 			g_last_exit_status = execute_with_redir(cmd_list, env_ptr);
-			free_commands(cmd_list);
-		}
 	}
+	free_commands(cmd_list);
 }
 
 int	build_prompt(char ***env_ptr)

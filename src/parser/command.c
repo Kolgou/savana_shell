@@ -39,6 +39,7 @@ static int	add_arguments(t_command *cmd, char *args)
 	}
 	new_args[i] = ft_strdup(args);
 	new_args[i + 1] = NULL;
+	free(cmd->args);
 	cmd->args = new_args; 
 	return (1);
 }

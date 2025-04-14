@@ -17,16 +17,14 @@ void	free_tokens(t_token *tokens)
 
 void	free_redirects(t_redirection *redirects)
 {
-	t_redirection	*current;
 	t_redirection	*next;
 
-	current = redirects;
-	while (current)
+	while (redirects)
 	{
-		next = current->next;
-		free(current->file);
-		free(current);
-		current = next;
+		next = redirects->next;
+		free(redirects->file);
+		free(redirects);
+		redirects = next;
 	}
 }
 
@@ -47,20 +45,14 @@ void	free_array(char **array)
 
 void	free_commands(t_command *cmd_list)
 {
-	t_command	*current;
 	t_command	*next;
 
-	current = cmd_list;
-	while (current)
+	while (cmd_list)
 	{
-		next = current->next;
-		if (current->args)
-		{
-			free_array(current->args);
-		}
-		if (current->redirect)
-			free_redirects(current->redirect);
-		free(current);
-		current = next;
+		next = cmd_list->next;
+		free_array(cmd_list->args);
+		free_redirects(cmd_list->redirect);
+		free(cmd_list);
+		cmd_list = next;
 	}
 }

@@ -31,6 +31,7 @@ static int	process_piped_command(t_command *current, pid_t *pid,
 	*pid = fork();
 	if (*pid == -1)
 		return (perror("fork"), -1);
+	
 	if (*pid == 0)
 	{
 		child_processed_pcmd(current, pipe_fd, env, saved_stdin);

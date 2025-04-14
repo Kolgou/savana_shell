@@ -6,7 +6,7 @@
 #    By: aaitbrah <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/10 14:47:24 by aaitbrah          #+#    #+#              #
-#    Updated: 2024/10/10 14:47:26 by aaitbrah         ###   ########.fr        #
+#    Updated: 2025/04/14 11:53:26 by alaualik         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,8 @@ SRC =	ft_isalpha.c \
 	ft_bzero.c \
 	ft_memcpy.c \
 	ft_strlcpy.c \
+	ft_strcpy.c \
+	ft_strncpy.c \
 	ft_strlcat.c \
 	ft_strdup.c \
 	ft_toupper.c \
@@ -37,6 +39,7 @@ SRC =	ft_isalpha.c \
 	ft_memcmp.c \
 	ft_memmove.c \
 	ft_strnstr.c \
+	ft_strstr.c \
 	ft_atoi.c \
 	ft_calloc.c \
 	ft_strjoin.c \

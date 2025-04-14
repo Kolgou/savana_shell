@@ -6,7 +6,7 @@
 /*   By: aaitbrah <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 14:40:45 by aaitbrah          #+#    #+#             */
-/*   Updated: 2024/10/10 14:40:47 by aaitbrah         ###   ########.fr       */
+/*   Updated: 2025/04/14 11:51:42 by alaualik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@ char				*ft_strtrim(char const *s1, char const *set);
 char				**ft_split(char const *s, char c);
 char				*ft_itoa(int n);
 char				*ft_strmapi(char const *str, char (*f)(unsigned int, char));
+char				*ft_strncpy(char *dest, const char *src, size_t n);
+char				*ft_strcpy(char *dest, const char *src);
+char				*ft_strstr(const char *haystack, const char *needle);
 void				ft_striteri(char *str, void (*f)(unsigned int, char *));
 void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *s, int fd);

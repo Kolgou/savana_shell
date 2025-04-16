@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaualik <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aaitbrah <aaitbrah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 20:35:19 by alaualik          #+#    #+#             */
-/*   Updated: 2025/04/14 10:55:12 by alaualik         ###   ########.fr       */
+/*   Updated: 2025/04/16 19:50:32 by aaitbrah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,19 @@ typedef struct s_command
 	char					**args;
 	t_redirection			*redirect;
 	struct s_command		*next;
+	struct s_command    	*prev;
 	char					**env;
 	int						test;
 	bool					single_quotes;
 	int						exit_s;
 }							t_command;
+
+typedef struct s_pipe_data
+{
+    t_command *cmd_list;
+    char **env;
+    int saved_stdin;
+}   t_pipe_data;
 
 // readline
 int							build_prompt(char ***env_ptr);
@@ -134,6 +142,10 @@ t_command					*parse_command(t_token *tokens);
 void						init_no_args(t_command *cmd, char *args);
 int							process_redirection(t_token **c_token,
 								t_command **c_cmd);
+
+// exec_cmd_path_u
+void						execute_child_process(char *path, char **args,
+								char **env, t_command *cmd);
 
 // execute_cmd_path
 int							execute_in_child(char *path, char **args,

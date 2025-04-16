@@ -3,43 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmd_path.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaualik <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aaitbrah <aaitbrah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 20:30:18 by alaualik          #+#    #+#             */
-/*   Updated: 2025/04/14 11:55:15 by alaualik         ###   ########.fr       */
+/*   Updated: 2025/04/16 16:34:14 by aaitbrah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	execute_in_child(char *path, char **args, char **env,
-		t_command *cmd)
+int	execute_in_child(char *path, char **args, char **env, t_command *cmd)
 {
 	pid_t	pid;
 	int		status;
 
 	pid = fork();
+	if (pid == -1)
+		return (perror("fork"), 1);
 	if (pid == 0)
-	{
-		if (cmd->redirect)
-		{
-			if (!apply_redirections(cmd->redirect))
-			{
-				free_commands(cmd);
-				free(path);
-				exit(EXIT_FAILURE);
-			}
-		}
-		if (execve(path, args, env) == -1)
-		{
-			free_commands(cmd);
-			free(path);
-			exit(EXIT_FAILURE);
-		}
-		free_commands(cmd);
-		free(path);
-		exit(EXIT_SUCCESS);
-	}
+		execute_child_process(path, args, env, cmd);
 	else
 	{
 		waitpid(pid, &status, 0);
@@ -66,8 +48,7 @@ int	handle_direct_path(t_command *cmd, char **env)
 	if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
 	{
 		if (!access(cmd->args[0], F_OK | X_OK))
-			return (execute_in_child(cmd->args[0], cmd->args, env,
-					cmd));
+			return (execute_in_child(cmd->args[0], cmd->args, env, cmd));
 		printf(BOLD_RED "أمر: %s: No such file or directory\n", cmd->args[0]);
 		return (127);
 	}

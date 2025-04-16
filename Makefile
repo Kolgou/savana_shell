@@ -4,8 +4,6 @@ CFLAGS = -Wall -Werror -Wextra -g
 
 LIBFT_DIR = libft
 
-
-
 SRC_DIR = src
 SRC_FILES = parser/readline.c \
          parser/parsing.c \
@@ -18,6 +16,7 @@ SRC_FILES = parser/readline.c \
 		 parser/checking.c \
 		 exec/execute_commands.c \
 		 exec/execute_cmd_path.c \
+		 exec/exec_cmd_path_u.c \
 		 exec/builtins.c \
 		 exec/second_builtins.c \
 		 exec/export_utils.c \

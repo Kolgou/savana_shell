@@ -6,7 +6,7 @@
 /*   By: aaitbrah <aaitbrah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 20:29:26 by alaualik          #+#    #+#             */
-/*   Updated: 2025/04/14 17:00:10 by aaitbrah         ###   ########.fr       */
+/*   Updated: 2025/04/16 18:11:49 by alaualik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	add_arguments(t_command *cmd, char *args)
 	new_args[i] = ft_strdup(args);
 	new_args[i + 1] = NULL;
 	free(cmd->args);
-	cmd->args = new_args; 
+	cmd->args = new_args;
 	cmd->args = new_args;
 	return (1);
 }

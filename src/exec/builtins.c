@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alaualik <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aaitbrah <aaitbrah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 20:30:25 by alaualik          #+#    #+#             */
-/*   Updated: 2025/04/14 11:19:24 by alaualik         ###   ########.fr       */
+/*   Updated: 2025/04/17 19:40:00 by aaitbrah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,27 +35,48 @@ void	ft_echo(t_command *cmd)
 		printf("\n");
 }
 
-int	ft_export(t_command *cmd, char ***env_ptr)
+static int	process_export_arg(char *arg, char ***env_ptr, char **env,
+		t_command *cmd)
 {
 	char	*new_var;
+
+	if (arg[0] == '=')
+	{
+		printf("export: `%s': not a valid identifier\n", arg);
+		return (1);
+	}
+	if (!check_correct_args(arg))
+	{
+		printf("export: `%s': not a valid identifier\n", arg);
+		return (1);
+	}
+	new_var = ft_strdup(arg);
+	if (!new_var)
+		return (1);
+	create_new_env(new_var, env, env_ptr, cmd);
+	return (0);
+}
+
+int	ft_export(t_command *cmd, char ***env_ptr)
+{
 	char	**env;
+	int		i;
+	int		status;
 
 	env = *env_ptr;
+	status = 0;
 	if (!cmd->args[1])
 	{
 		sort_env(cmd->env);
 		return (0);
 	}
-	if (!check_correct_args(cmd->args[1]))
+	i = 1;
+	while (cmd->args[i])
 	{
-		printf("Export failed: invalid identifier\n");
-		return (1);
+		status |= process_export_arg(cmd->args[i], env_ptr, env, cmd);
+		i++;
 	}
-	new_var = ft_strdup(cmd->args[1]);
-	if (!new_var)
-		return (1);
-	create_new_env(new_var, env, env_ptr, cmd);
-	return (0);
+	return (status);
 }
 
 int	ft_cd(t_command *cmd)

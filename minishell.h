@@ -6,7 +6,7 @@
 /*   By: aaitbrah <aaitbrah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/12 20:35:19 by alaualik          #+#    #+#             */
-/*   Updated: 2025/04/16 19:50:32 by aaitbrah         ###   ########.fr       */
+/*   Updated: 2025/04/17 18:49:58 by aaitbrah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_command
 	char					**args;
 	t_redirection			*redirect;
 	struct s_command		*next;
-	struct s_command    	*prev;
+	struct s_command		*prev;
 	char					**env;
 	int						test;
 	bool					single_quotes;
@@ -95,10 +95,10 @@ typedef struct s_command
 
 typedef struct s_pipe_data
 {
-    t_command *cmd_list;
-    char **env;
-    int saved_stdin;
-}   t_pipe_data;
+	t_command				*cmd_list;
+	char					**env;
+	int						saved_stdin;
+}							t_pipe_data;
 
 // readline
 int							build_prompt(char ***env_ptr);
@@ -177,6 +177,11 @@ int							heredoc_redir(t_redirection *redirect);
 
 // pipe
 int							pipe_handler(t_command *command, char ***env_ptr);
+
+// pipe_utils
+void						handle_redirect_error(t_command *cmd_list,
+								char **env);
+void						setup_pipe_child(int *pipe_fd, int saved_stdin);
 
 // expand
 int							expand_var_env(t_command *command, char **env);

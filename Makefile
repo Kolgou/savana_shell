@@ -25,6 +25,7 @@ SRC_FILES = parser/readline.c \
 		 redirections/handle_redir.c \
 		 redirections/heredoc.c \
 		 pipe/handle_pipe.c \
+		 pipe/pipe_utils.c \
 		 expand/expand_env.c \
          main.c
 
